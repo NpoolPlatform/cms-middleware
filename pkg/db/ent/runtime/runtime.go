@@ -8,7 +8,6 @@ import (
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/acl"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/article"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/category"
-	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/categorylang"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/media"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/schema"
 	"github.com/google/uuid"
@@ -195,52 +194,6 @@ func init() {
 	categoryDescEnabled := categoryFields[4].Descriptor()
 	// category.DefaultEnabled holds the default value on creation for the enabled field.
 	category.DefaultEnabled = categoryDescEnabled.Default.(bool)
-	categorylangMixin := schema.CategoryLang{}.Mixin()
-	categorylang.Policy = privacy.NewPolicies(categorylangMixin[0], schema.CategoryLang{})
-	categorylang.Hooks[0] = func(next ent.Mutator) ent.Mutator {
-		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-			if err := categorylang.Policy.EvalMutation(ctx, m); err != nil {
-				return nil, err
-			}
-			return next.Mutate(ctx, m)
-		})
-	}
-	categorylangMixinFields0 := categorylangMixin[0].Fields()
-	_ = categorylangMixinFields0
-	categorylangMixinFields1 := categorylangMixin[1].Fields()
-	_ = categorylangMixinFields1
-	categorylangFields := schema.CategoryLang{}.Fields()
-	_ = categorylangFields
-	// categorylangDescCreatedAt is the schema descriptor for created_at field.
-	categorylangDescCreatedAt := categorylangMixinFields0[0].Descriptor()
-	// categorylang.DefaultCreatedAt holds the default value on creation for the created_at field.
-	categorylang.DefaultCreatedAt = categorylangDescCreatedAt.Default.(func() uint32)
-	// categorylangDescUpdatedAt is the schema descriptor for updated_at field.
-	categorylangDescUpdatedAt := categorylangMixinFields0[1].Descriptor()
-	// categorylang.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	categorylang.DefaultUpdatedAt = categorylangDescUpdatedAt.Default.(func() uint32)
-	// categorylang.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	categorylang.UpdateDefaultUpdatedAt = categorylangDescUpdatedAt.UpdateDefault.(func() uint32)
-	// categorylangDescDeletedAt is the schema descriptor for deleted_at field.
-	categorylangDescDeletedAt := categorylangMixinFields0[2].Descriptor()
-	// categorylang.DefaultDeletedAt holds the default value on creation for the deleted_at field.
-	categorylang.DefaultDeletedAt = categorylangDescDeletedAt.Default.(func() uint32)
-	// categorylangDescEntID is the schema descriptor for ent_id field.
-	categorylangDescEntID := categorylangMixinFields1[1].Descriptor()
-	// categorylang.DefaultEntID holds the default value on creation for the ent_id field.
-	categorylang.DefaultEntID = categorylangDescEntID.Default.(func() uuid.UUID)
-	// categorylangDescLangID is the schema descriptor for lang_id field.
-	categorylangDescLangID := categorylangFields[1].Descriptor()
-	// categorylang.DefaultLangID holds the default value on creation for the lang_id field.
-	categorylang.DefaultLangID = categorylangDescLangID.Default.(func() uuid.UUID)
-	// categorylangDescCategoryID is the schema descriptor for category_id field.
-	categorylangDescCategoryID := categorylangFields[2].Descriptor()
-	// categorylang.DefaultCategoryID holds the default value on creation for the category_id field.
-	categorylang.DefaultCategoryID = categorylangDescCategoryID.Default.(func() uuid.UUID)
-	// categorylangDescDisplay is the schema descriptor for display field.
-	categorylangDescDisplay := categorylangFields[3].Descriptor()
-	// categorylang.DefaultDisplay holds the default value on creation for the display field.
-	categorylang.DefaultDisplay = categorylangDescDisplay.Default.(string)
 	mediaMixin := schema.Media{}.Mixin()
 	media.Policy = privacy.NewPolicies(mediaMixin[0], schema.Media{})
 	media.Hooks[0] = func(next ent.Mutator) ent.Mutator {

@@ -15,8 +15,5 @@ type Article func(*sql.Selector)
 // Category is the predicate function for category builders.
 type Category func(*sql.Selector)
 
-// CategoryLang is the predicate function for categorylang builders.
-type CategoryLang func(*sql.Selector)
-
 // Media is the predicate function for media builders.
 type Media func(*sql.Selector)

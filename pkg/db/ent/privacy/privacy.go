@@ -222,30 +222,6 @@ func (f CategoryMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutati
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.CategoryMutation", m)
 }
 
-// The CategoryLangQueryRuleFunc type is an adapter to allow the use of ordinary
-// functions as a query rule.
-type CategoryLangQueryRuleFunc func(context.Context, *ent.CategoryLangQuery) error
-
-// EvalQuery return f(ctx, q).
-func (f CategoryLangQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.CategoryLangQuery); ok {
-		return f(ctx, q)
-	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.CategoryLangQuery", q)
-}
-
-// The CategoryLangMutationRuleFunc type is an adapter to allow the use of ordinary
-// functions as a mutation rule.
-type CategoryLangMutationRuleFunc func(context.Context, *ent.CategoryLangMutation) error
-
-// EvalMutation calls f(ctx, m).
-func (f CategoryLangMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.CategoryLangMutation); ok {
-		return f(ctx, m)
-	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.CategoryLangMutation", m)
-}
-
 // The MediaQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type MediaQueryRuleFunc func(context.Context, *ent.MediaQuery) error
@@ -311,8 +287,6 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.CategoryQuery:
 		return q.Filter(), nil
-	case *ent.CategoryLangQuery:
-		return q.Filter(), nil
 	case *ent.MediaQuery:
 		return q.Filter(), nil
 	default:
@@ -327,8 +301,6 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.ArticleMutation:
 		return m.Filter(), nil
 	case *ent.CategoryMutation:
-		return m.Filter(), nil
-	case *ent.CategoryLangMutation:
 		return m.Filter(), nil
 	case *ent.MediaMutation:
 		return m.Filter(), nil

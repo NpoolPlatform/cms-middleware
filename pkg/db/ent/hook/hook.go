@@ -48,19 +48,6 @@ func (f CategoryFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, er
 	return f(ctx, mv)
 }
 
-// The CategoryLangFunc type is an adapter to allow the use of ordinary
-// function as CategoryLang mutator.
-type CategoryLangFunc func(context.Context, *ent.CategoryLangMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f CategoryLangFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.CategoryLangMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CategoryLangMutation", m)
-	}
-	return f(ctx, mv)
-}
-
 // The MediaFunc type is an adapter to allow the use of ordinary
 // function as Media mutator.
 type MediaFunc func(context.Context, *ent.MediaMutation) (ent.Value, error)

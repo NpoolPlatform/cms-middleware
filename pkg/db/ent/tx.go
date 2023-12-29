@@ -20,8 +20,6 @@ type Tx struct {
 	Article *ArticleClient
 	// Category is the client for interacting with the Category builders.
 	Category *CategoryClient
-	// CategoryLang is the client for interacting with the CategoryLang builders.
-	CategoryLang *CategoryLangClient
 	// Media is the client for interacting with the Media builders.
 	Media *MediaClient
 
@@ -162,7 +160,6 @@ func (tx *Tx) init() {
 	tx.ACL = NewACLClient(tx.config)
 	tx.Article = NewArticleClient(tx.config)
 	tx.Category = NewCategoryClient(tx.config)
-	tx.CategoryLang = NewCategoryLangClient(tx.config)
 	tx.Media = NewMediaClient(tx.config)
 }
 

@@ -93,31 +93,6 @@ var (
 			},
 		},
 	}
-	// CategoryLangsColumns holds the columns for the "category_langs" table.
-	CategoryLangsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUint32, Increment: true},
-		{Name: "created_at", Type: field.TypeUint32},
-		{Name: "updated_at", Type: field.TypeUint32},
-		{Name: "deleted_at", Type: field.TypeUint32},
-		{Name: "ent_id", Type: field.TypeUUID, Unique: true},
-		{Name: "app_id", Type: field.TypeUUID},
-		{Name: "lang_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "category_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "display", Type: field.TypeString, Nullable: true, Default: ""},
-	}
-	// CategoryLangsTable holds the schema information for the "category_langs" table.
-	CategoryLangsTable = &schema.Table{
-		Name:       "category_langs",
-		Columns:    CategoryLangsColumns,
-		PrimaryKey: []*schema.Column{CategoryLangsColumns[0]},
-		Indexes: []*schema.Index{
-			{
-				Name:    "categorylang_ent_id",
-				Unique:  true,
-				Columns: []*schema.Column{CategoryLangsColumns[4]},
-			},
-		},
-	}
 	// MediaColumns holds the columns for the "media" table.
 	MediaColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUint32, Increment: true},
@@ -149,7 +124,6 @@ var (
 		AclsTable,
 		ArticlesTable,
 		CategoriesTable,
-		CategoryLangsTable,
 		MediaTable,
 	}
 )

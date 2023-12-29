@@ -6,7 +6,6 @@ import (
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/acl"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/article"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/category"
-	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/categorylang"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/media"
 
 	"entgo.io/ent/dialect/sql"
@@ -17,7 +16,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 5)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 4)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   acl.Table,
@@ -91,27 +90,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 	}
 	graph.Nodes[3] = &sqlgraph.Node{
-		NodeSpec: sqlgraph.NodeSpec{
-			Table:   categorylang.Table,
-			Columns: categorylang.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUint32,
-				Column: categorylang.FieldID,
-			},
-		},
-		Type: "CategoryLang",
-		Fields: map[string]*sqlgraph.FieldSpec{
-			categorylang.FieldCreatedAt:  {Type: field.TypeUint32, Column: categorylang.FieldCreatedAt},
-			categorylang.FieldUpdatedAt:  {Type: field.TypeUint32, Column: categorylang.FieldUpdatedAt},
-			categorylang.FieldDeletedAt:  {Type: field.TypeUint32, Column: categorylang.FieldDeletedAt},
-			categorylang.FieldEntID:      {Type: field.TypeUUID, Column: categorylang.FieldEntID},
-			categorylang.FieldAppID:      {Type: field.TypeUUID, Column: categorylang.FieldAppID},
-			categorylang.FieldLangID:     {Type: field.TypeUUID, Column: categorylang.FieldLangID},
-			categorylang.FieldCategoryID: {Type: field.TypeUUID, Column: categorylang.FieldCategoryID},
-			categorylang.FieldDisplay:    {Type: field.TypeString, Column: categorylang.FieldDisplay},
-		},
-	}
-	graph.Nodes[4] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   media.Table,
 			Columns: media.Columns,
@@ -428,86 +406,6 @@ func (f *CategoryFilter) WhereEnabled(p entql.BoolP) {
 }
 
 // addPredicate implements the predicateAdder interface.
-func (clq *CategoryLangQuery) addPredicate(pred func(s *sql.Selector)) {
-	clq.predicates = append(clq.predicates, pred)
-}
-
-// Filter returns a Filter implementation to apply filters on the CategoryLangQuery builder.
-func (clq *CategoryLangQuery) Filter() *CategoryLangFilter {
-	return &CategoryLangFilter{config: clq.config, predicateAdder: clq}
-}
-
-// addPredicate implements the predicateAdder interface.
-func (m *CategoryLangMutation) addPredicate(pred func(s *sql.Selector)) {
-	m.predicates = append(m.predicates, pred)
-}
-
-// Filter returns an entql.Where implementation to apply filters on the CategoryLangMutation builder.
-func (m *CategoryLangMutation) Filter() *CategoryLangFilter {
-	return &CategoryLangFilter{config: m.config, predicateAdder: m}
-}
-
-// CategoryLangFilter provides a generic filtering capability at runtime for CategoryLangQuery.
-type CategoryLangFilter struct {
-	predicateAdder
-	config
-}
-
-// Where applies the entql predicate on the query filter.
-func (f *CategoryLangFilter) Where(p entql.P) {
-	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
-			s.AddError(err)
-		}
-	})
-}
-
-// WhereID applies the entql uint32 predicate on the id field.
-func (f *CategoryLangFilter) WhereID(p entql.Uint32P) {
-	f.Where(p.Field(categorylang.FieldID))
-}
-
-// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
-func (f *CategoryLangFilter) WhereCreatedAt(p entql.Uint32P) {
-	f.Where(p.Field(categorylang.FieldCreatedAt))
-}
-
-// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
-func (f *CategoryLangFilter) WhereUpdatedAt(p entql.Uint32P) {
-	f.Where(p.Field(categorylang.FieldUpdatedAt))
-}
-
-// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
-func (f *CategoryLangFilter) WhereDeletedAt(p entql.Uint32P) {
-	f.Where(p.Field(categorylang.FieldDeletedAt))
-}
-
-// WhereEntID applies the entql [16]byte predicate on the ent_id field.
-func (f *CategoryLangFilter) WhereEntID(p entql.ValueP) {
-	f.Where(p.Field(categorylang.FieldEntID))
-}
-
-// WhereAppID applies the entql [16]byte predicate on the app_id field.
-func (f *CategoryLangFilter) WhereAppID(p entql.ValueP) {
-	f.Where(p.Field(categorylang.FieldAppID))
-}
-
-// WhereLangID applies the entql [16]byte predicate on the lang_id field.
-func (f *CategoryLangFilter) WhereLangID(p entql.ValueP) {
-	f.Where(p.Field(categorylang.FieldLangID))
-}
-
-// WhereCategoryID applies the entql [16]byte predicate on the category_id field.
-func (f *CategoryLangFilter) WhereCategoryID(p entql.ValueP) {
-	f.Where(p.Field(categorylang.FieldCategoryID))
-}
-
-// WhereDisplay applies the entql string predicate on the display field.
-func (f *CategoryLangFilter) WhereDisplay(p entql.StringP) {
-	f.Where(p.Field(categorylang.FieldDisplay))
-}
-
-// addPredicate implements the predicateAdder interface.
 func (mq *MediaQuery) addPredicate(pred func(s *sql.Selector)) {
 	mq.predicates = append(mq.predicates, pred)
 }
@@ -536,7 +434,7 @@ type MediaFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *MediaFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[4].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})

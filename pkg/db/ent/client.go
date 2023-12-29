@@ -13,7 +13,6 @@ import (
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/acl"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/article"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/category"
-	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/categorylang"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/media"
 
 	"entgo.io/ent/dialect"
@@ -31,8 +30,6 @@ type Client struct {
 	Article *ArticleClient
 	// Category is the client for interacting with the Category builders.
 	Category *CategoryClient
-	// CategoryLang is the client for interacting with the CategoryLang builders.
-	CategoryLang *CategoryLangClient
 	// Media is the client for interacting with the Media builders.
 	Media *MediaClient
 }
@@ -51,7 +48,6 @@ func (c *Client) init() {
 	c.ACL = NewACLClient(c.config)
 	c.Article = NewArticleClient(c.config)
 	c.Category = NewCategoryClient(c.config)
-	c.CategoryLang = NewCategoryLangClient(c.config)
 	c.Media = NewMediaClient(c.config)
 }
 
@@ -84,13 +80,12 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:          ctx,
-		config:       cfg,
-		ACL:          NewACLClient(cfg),
-		Article:      NewArticleClient(cfg),
-		Category:     NewCategoryClient(cfg),
-		CategoryLang: NewCategoryLangClient(cfg),
-		Media:        NewMediaClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		ACL:      NewACLClient(cfg),
+		Article:  NewArticleClient(cfg),
+		Category: NewCategoryClient(cfg),
+		Media:    NewMediaClient(cfg),
 	}, nil
 }
 
@@ -108,13 +103,12 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:          ctx,
-		config:       cfg,
-		ACL:          NewACLClient(cfg),
-		Article:      NewArticleClient(cfg),
-		Category:     NewCategoryClient(cfg),
-		CategoryLang: NewCategoryLangClient(cfg),
-		Media:        NewMediaClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		ACL:      NewACLClient(cfg),
+		Article:  NewArticleClient(cfg),
+		Category: NewCategoryClient(cfg),
+		Media:    NewMediaClient(cfg),
 	}, nil
 }
 
@@ -147,7 +141,6 @@ func (c *Client) Use(hooks ...Hook) {
 	c.ACL.Use(hooks...)
 	c.Article.Use(hooks...)
 	c.Category.Use(hooks...)
-	c.CategoryLang.Use(hooks...)
 	c.Media.Use(hooks...)
 }
 
@@ -422,97 +415,6 @@ func (c *CategoryClient) GetX(ctx context.Context, id uint32) *Category {
 func (c *CategoryClient) Hooks() []Hook {
 	hooks := c.hooks.Category
 	return append(hooks[:len(hooks):len(hooks)], category.Hooks[:]...)
-}
-
-// CategoryLangClient is a client for the CategoryLang schema.
-type CategoryLangClient struct {
-	config
-}
-
-// NewCategoryLangClient returns a client for the CategoryLang from the given config.
-func NewCategoryLangClient(c config) *CategoryLangClient {
-	return &CategoryLangClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `categorylang.Hooks(f(g(h())))`.
-func (c *CategoryLangClient) Use(hooks ...Hook) {
-	c.hooks.CategoryLang = append(c.hooks.CategoryLang, hooks...)
-}
-
-// Create returns a builder for creating a CategoryLang entity.
-func (c *CategoryLangClient) Create() *CategoryLangCreate {
-	mutation := newCategoryLangMutation(c.config, OpCreate)
-	return &CategoryLangCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of CategoryLang entities.
-func (c *CategoryLangClient) CreateBulk(builders ...*CategoryLangCreate) *CategoryLangCreateBulk {
-	return &CategoryLangCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for CategoryLang.
-func (c *CategoryLangClient) Update() *CategoryLangUpdate {
-	mutation := newCategoryLangMutation(c.config, OpUpdate)
-	return &CategoryLangUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *CategoryLangClient) UpdateOne(cl *CategoryLang) *CategoryLangUpdateOne {
-	mutation := newCategoryLangMutation(c.config, OpUpdateOne, withCategoryLang(cl))
-	return &CategoryLangUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *CategoryLangClient) UpdateOneID(id uint32) *CategoryLangUpdateOne {
-	mutation := newCategoryLangMutation(c.config, OpUpdateOne, withCategoryLangID(id))
-	return &CategoryLangUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for CategoryLang.
-func (c *CategoryLangClient) Delete() *CategoryLangDelete {
-	mutation := newCategoryLangMutation(c.config, OpDelete)
-	return &CategoryLangDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a builder for deleting the given entity.
-func (c *CategoryLangClient) DeleteOne(cl *CategoryLang) *CategoryLangDeleteOne {
-	return c.DeleteOneID(cl.ID)
-}
-
-// DeleteOne returns a builder for deleting the given entity by its id.
-func (c *CategoryLangClient) DeleteOneID(id uint32) *CategoryLangDeleteOne {
-	builder := c.Delete().Where(categorylang.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &CategoryLangDeleteOne{builder}
-}
-
-// Query returns a query builder for CategoryLang.
-func (c *CategoryLangClient) Query() *CategoryLangQuery {
-	return &CategoryLangQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a CategoryLang entity by its id.
-func (c *CategoryLangClient) Get(ctx context.Context, id uint32) (*CategoryLang, error) {
-	return c.Query().Where(categorylang.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *CategoryLangClient) GetX(ctx context.Context, id uint32) *CategoryLang {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *CategoryLangClient) Hooks() []Hook {
-	hooks := c.hooks.CategoryLang
-	return append(hooks[:len(hooks):len(hooks)], categorylang.Hooks[:]...)
 }
 
 // MediaClient is a client for the Media schema.

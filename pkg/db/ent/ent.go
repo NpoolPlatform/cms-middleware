@@ -13,7 +13,6 @@ import (
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/acl"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/article"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/category"
-	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/categorylang"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent/media"
 )
 
@@ -35,11 +34,10 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		acl.Table:          acl.ValidColumn,
-		article.Table:      article.ValidColumn,
-		category.Table:     category.ValidColumn,
-		categorylang.Table: categorylang.ValidColumn,
-		media.Table:        media.ValidColumn,
+		acl.Table:      acl.ValidColumn,
+		article.Table:  article.ValidColumn,
+		category.Table: category.ValidColumn,
+		media.Table:    media.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {
