@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms-middleware
+  namespace: kube-system
+  annotations:
+    "sidecar.jaegertracing.io/inject": "true"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cms-middleware
+  template:
+    metadata:
+      labels:
+        app: cms-middleware
+    spec:
+      containers:
+        - name: cms-middleware
+          image: uhub.service.ucloud.cn/entropypool/cms-middleware:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: service-config
+              mountPath: /etc/CmsMiddleware
+          env:
+            - name: ENV_ENVIRONMENT_TARGET
+              valueFrom:
+                configMapKeyRef:
+                  name: system-environment
+                  key: environment.target
+            - name: ENV_CONSUL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: system-environment
+                  key: environment.consul_host
+            - name: ENV_CONSUL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: system-environment
+                  key: environment.consul_port
+            - name: ENV_CLUSTER_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+      volumes:
+        - name: service-config
+          configMap:
+            name: cms-middleware-config
+            items:
+              - key: service-conf
+                path: CmsMiddleware.viper.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cms-middleware
+  namespace: kube-system
+spec:
+  ports:
+    - name: http
+      port: 50530
+      targetPort: 50530
+    - name: grpc
+      port: 50531
+      targetPort: 50531
+    - name: healthz
+      port: 50532
+      targetPort: 50532
+    - name: prometheus
+      port: 50533
+      targetPort: 50533
+  selector:
+    app: cms-middleware
