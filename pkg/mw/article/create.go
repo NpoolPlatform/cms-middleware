@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	constant "github.com/NpoolPlatform/cms-middleware/pkg/const"
 	articlecrud "github.com/NpoolPlatform/cms-middleware/pkg/crud/article"
 	categorycrud "github.com/NpoolPlatform/cms-middleware/pkg/crud/category"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db"
@@ -77,8 +78,9 @@ func (h *createHandler) checkVersion(ctx context.Context, tx *ent.Tx) error {
 	}
 	h.Conds = &articlecrud.Conds{
 		AppID:      &cruder.Cond{Op: cruder.EQ, Val: *h.AppID},
-		ArticleKey: &cruder.Cond{Op: cruder.NEQ, Val: *h.ArticleKey},
+		ArticleKey: &cruder.Cond{Op: cruder.EQ, Val: *h.ArticleKey},
 	}
+	h.Limit = constant.DefaultRowLimit
 	infos, _, err := h.GetArticles(ctx)
 	if err != nil {
 		return err

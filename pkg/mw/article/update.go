@@ -8,10 +8,8 @@ import (
 	articlecrud "github.com/NpoolPlatform/cms-middleware/pkg/crud/article"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db"
 	"github.com/NpoolPlatform/cms-middleware/pkg/db/ent"
-	redis2 "github.com/NpoolPlatform/go-service-framework/pkg/redis"
 	cruder "github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	types "github.com/NpoolPlatform/message/npool/basetypes/cms/v1"
-	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
 	npool "github.com/NpoolPlatform/message/npool/cms/mw/v1/article"
 	"github.com/google/uuid"
 )
@@ -66,18 +64,13 @@ func (h *Handler) UpdateArticle(ctx context.Context) (*npool.Article, error) {
 	if info == nil {
 		return nil, nil
 	}
+	if !info.Latest {
+		return info, nil
+	}
 	appID := uuid.MustParse(info.AppID)
 	h.AppID = &appID
 
 	if h.Title != nil {
-		key := fmt.Sprintf("%v:%v:%v", basetypes.Prefix_PrefixCreateAppGood, *h.AppID, *h.Title)
-		if err := redis2.TryLock(key, 0); err != nil {
-			return nil, err
-		}
-		defer func() {
-			_ = redis2.Unlock(key)
-		}()
-
 		latest := true
 		h.Conds = &articlecrud.Conds{
 			ID:     &cruder.Cond{Op: cruder.NEQ, Val: *h.ID},
