@@ -111,6 +111,18 @@ func SetQueryConds(q *ent.ACLQuery, conds *Conds) (*ent.ACLQuery, error) {
 			return nil, fmt.Errorf("invalid entids field")
 		}
 	}
+	if conds.AppID != nil {
+		id, ok := conds.AppID.Val.(uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid appid")
+		}
+		switch conds.AppID.Op {
+		case cruder.EQ:
+			q.Where(entacl.AppID(id))
+		default:
+			return nil, fmt.Errorf("invalid appid field")
+		}
+	}
 	if conds.RoleID != nil {
 		roleid, ok := conds.RoleID.Val.(uuid.UUID)
 		if !ok {

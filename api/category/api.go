@@ -3,7 +3,7 @@ package category
 import (
 	"github.com/NpoolPlatform/message/npool/cms/mw/v1/category"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 )
 

@@ -11,6 +11,7 @@ require (
 	github.com/NpoolPlatform/message v0.0.0-20231229071722-640b59836a61
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/google/uuid v1.3.0
+	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
 	github.com/stretchr/testify v1.8.3
 	github.com/urfave/cli/v2 v2.4.0

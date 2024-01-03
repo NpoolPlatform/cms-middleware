@@ -1,3 +1,4 @@
+//nolint:dupl
 package category
 
 import (
@@ -52,6 +53,46 @@ func (h *createHandler) checkParentExist(ctx context.Context) error {
 	return nil
 }
 
+func (h *createHandler) checkNameRepeated(ctx context.Context) error {
+	parentID := uuid.Nil
+	if h.ParentID != nil {
+		parentID = *h.ParentID
+	}
+	h.Conds = &categorycrud.Conds{
+		Name:     &cruder.Cond{Op: cruder.EQ, Val: *h.Name},
+		AppID:    &cruder.Cond{Op: cruder.EQ, Val: *h.AppID},
+		ParentID: &cruder.Cond{Op: cruder.EQ, Val: parentID},
+	}
+	exist, err := h.ExistCategoryConds(ctx)
+	if err != nil {
+		return err
+	}
+	if exist {
+		return fmt.Errorf("arleady exists")
+	}
+	return nil
+}
+
+func (h *createHandler) checkSlugRepeated(ctx context.Context) error {
+	parentID := uuid.Nil
+	if h.ParentID != nil {
+		parentID = *h.ParentID
+	}
+	h.Conds = &categorycrud.Conds{
+		Slug:     &cruder.Cond{Op: cruder.EQ, Val: *h.Slug},
+		AppID:    &cruder.Cond{Op: cruder.EQ, Val: *h.AppID},
+		ParentID: &cruder.Cond{Op: cruder.EQ, Val: parentID},
+	}
+	exist, err := h.ExistCategoryConds(ctx)
+	if err != nil {
+		return err
+	}
+	if exist {
+		return fmt.Errorf("arleady exists")
+	}
+	return nil
+}
+
 func (h *Handler) CreateCategory(ctx context.Context) (*npool.Category, error) {
 	if h.Name == nil {
 		return nil, fmt.Errorf("invalid name")
@@ -76,6 +117,14 @@ func (h *Handler) CreateCategory(ctx context.Context) (*npool.Category, error) {
 	}
 
 	if err := handler.checkParentExist(ctx); err != nil {
+		return nil, err
+	}
+
+	if err := handler.checkNameRepeated(ctx); err != nil {
+		return nil, err
+	}
+
+	if err := handler.checkSlugRepeated(ctx); err != nil {
 		return nil, err
 	}
 
