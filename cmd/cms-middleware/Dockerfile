@@ -6,6 +6,6 @@ COPY cms-middleware /app
 
 ENTRYPOINT ["/app/cms-middleware"]
 
-EXPOSE 50600 50601 50602 50603
+EXPOSE 50800 50801 50802 50803
 
 CMD ["run"]
