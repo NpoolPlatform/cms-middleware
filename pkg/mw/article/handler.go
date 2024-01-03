@@ -29,6 +29,7 @@ type Handler struct {
 	Latest      *bool
 	ContentURL  *string
 	Host        *string
+	ISO         *string
 	PublishedAt *uint32
 	Conds       *articlecrud.Conds
 	Offset      int32
@@ -270,6 +271,22 @@ func WithHost(host *string, must bool) func(context.Context, *Handler) error {
 	}
 }
 
+func WithISO(iso *string, must bool) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if iso == nil {
+			if must {
+				return fmt.Errorf("invalid iso")
+			}
+			return nil
+		}
+		if *iso == "" {
+			return fmt.Errorf("invalid iso")
+		}
+		h.ISO = iso
+		return nil
+	}
+}
+
 //nolint:gocyclo
 func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
@@ -332,6 +349,9 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 		if conds.Host != nil {
 			h.Conds.Host = &cruder.Cond{Op: conds.GetHost().GetOp(), Val: conds.GetHost().GetValue()}
+		}
+		if conds.ISO != nil {
+			h.Conds.ISO = &cruder.Cond{Op: conds.GetISO().GetOp(), Val: conds.GetISO().GetValue()}
 		}
 		if conds.Latest != nil {
 			h.Conds.Latest = &cruder.Cond{Op: conds.GetLatest().GetOp(), Val: conds.GetLatest().GetValue()}

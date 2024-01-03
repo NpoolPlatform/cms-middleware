@@ -33,6 +33,7 @@ func (s *Server) CreateArticle(ctx context.Context, in *npool.CreateArticleReque
 		article1.WithDigest(req.Digest, false),
 		article1.WithStatus(req.Status, false),
 		article1.WithHost(req.Host, true),
+		article1.WithISO(req.ISO, true),
 		article1.WithContentURL(req.ContentURL, true),
 		article1.WithVersion(req.Version, true),
 	)

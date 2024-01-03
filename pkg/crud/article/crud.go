@@ -23,11 +23,13 @@ type Req struct {
 	Version     *uint32
 	Latest      *bool
 	Host        *string
+	ISO         *string
 	ContentURL  *string
 	PublishedAt *uint32
 	DeletedAt   *uint32
 }
 
+//nolint:gocyclo
 func CreateSet(c *ent.ArticleCreate, req *Req) *ent.ArticleCreate {
 	if req.EntID != nil {
 		c.SetEntID(*req.EntID)
@@ -70,6 +72,9 @@ func CreateSet(c *ent.ArticleCreate, req *Req) *ent.ArticleCreate {
 	}
 	if req.PublishedAt != nil {
 		c.SetPublishedAt(*req.PublishedAt)
+	}
+	if req.ISO != nil {
+		c.SetIso(*req.ISO)
 	}
 
 	return c
@@ -121,6 +126,7 @@ type Conds struct {
 	Host       *cruder.Cond
 	Latest     *cruder.Cond
 	ContentURL *cruder.Cond
+	ISO        *cruder.Cond
 	IDs        *cruder.Cond
 	EntIDs     *cruder.Cond
 }
@@ -369,6 +375,20 @@ func SetQueryConds(q *ent.ArticleQuery, conds *Conds) (*ent.ArticleQuery, error)
 			return nil, fmt.Errorf("invalid host field")
 		}
 	}
-
+	if conds.ISO != nil {
+		iso, ok := conds.ISO.Val.(string)
+		if !ok {
+			return nil, fmt.Errorf("invalid iso")
+		}
+		switch conds.ISO.Op {
+		case cruder.EQ:
+			q.Where(
+				entarticle.Iso(iso),
+				entarticle.DeletedAt(0),
+			)
+		default:
+			return nil, fmt.Errorf("invalid iso field")
+		}
+	}
 	return q, nil
 }

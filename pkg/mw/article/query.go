@@ -72,6 +72,7 @@ func (h *queryHandler) queryJoinMyself(s *sql.Selector) {
 			sql.As(t.C(entarticle.FieldVersion), "version"),
 			sql.As(t.C(entarticle.FieldLatest), "latest"),
 			sql.As(t.C(entarticle.FieldHost), "host"),
+			sql.As(t.C(entarticle.FieldIso), "iso"),
 			sql.As(t.C(entarticle.FieldContentURL), "content_url"),
 			sql.As(t.C(entarticle.FieldPublishedAt), "published_at"),
 		)

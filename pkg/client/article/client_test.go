@@ -48,6 +48,7 @@ var ret = &npool.Article{
 	Subtitle:     uuid.NewString(),
 	Digest:       uuid.NewString(),
 	Host:         "api.site.top",
+	ISO:          "en-US",
 	Status:       cmstypes.ArticleStatus_Draft,
 	StatusStr:    cmstypes.ArticleStatus_Draft.String(),
 	Version:      1,
@@ -66,6 +67,7 @@ var req = &npool.ArticleReq{
 	Digest:     &ret.Digest,
 	ContentURL: &ret.ContentURL,
 	Host:       &ret.Host,
+	ISO:        &ret.ISO,
 	Version:    &ret.Version,
 }
 

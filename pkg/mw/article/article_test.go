@@ -41,6 +41,7 @@ var (
 		Subtitle:     uuid.NewString(),
 		Digest:       uuid.NewString(),
 		Host:         "api.site.top",
+		ISO:          "en-US",
 		Status:       cmstypes.ArticleStatus_Draft,
 		StatusStr:    cmstypes.ArticleStatus_Draft.String(),
 		Version:      1,
@@ -81,6 +82,7 @@ func createArticle(t *testing.T) {
 		WithDigest(&ret.Digest, true),
 		WithContentURL(&ret.ContentURL, true),
 		WithHost(&ret.Host, true),
+		WithISO(&ret.ISO, true),
 		WithVersion(&ret.Version, true),
 	)
 	assert.Nil(t, err)

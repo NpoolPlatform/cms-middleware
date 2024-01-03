@@ -120,6 +120,7 @@ func (h *createHandler) createArticle(ctx context.Context, tx *ent.Tx) error {
 			Version:    h.Version,
 			Latest:     h.Latest,
 			Host:       h.Host,
+			ISO:        h.ISO,
 			ContentURL: h.ContentURL,
 		},
 	).Save(ctx); err != nil {
