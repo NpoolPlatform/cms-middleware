@@ -50,6 +50,7 @@ var (
 		{Name: "status", Type: field.TypeString, Nullable: true, Default: "Draft"},
 		{Name: "host", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
 		{Name: "version", Type: field.TypeUint32, Nullable: true, Default: 1},
+		{Name: "iso", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "content_url", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
 		{Name: "latest", Type: field.TypeBool, Nullable: true, Default: true},
 		{Name: "published_at", Type: field.TypeUint32, Nullable: true, Default: 0},

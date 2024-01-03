@@ -291,6 +291,26 @@ func (au *ArticleUpdate) ClearVersion() *ArticleUpdate {
 	return au
 }
 
+// SetIso sets the "iso" field.
+func (au *ArticleUpdate) SetIso(s string) *ArticleUpdate {
+	au.mutation.SetIso(s)
+	return au
+}
+
+// SetNillableIso sets the "iso" field if the given value is not nil.
+func (au *ArticleUpdate) SetNillableIso(s *string) *ArticleUpdate {
+	if s != nil {
+		au.SetIso(*s)
+	}
+	return au
+}
+
+// ClearIso clears the value of the "iso" field.
+func (au *ArticleUpdate) ClearIso() *ArticleUpdate {
+	au.mutation.ClearIso()
+	return au
+}
+
 // SetContentURL sets the "content_url" field.
 func (au *ArticleUpdate) SetContentURL(s string) *ArticleUpdate {
 	au.mutation.SetContentURL(s)
@@ -636,6 +656,19 @@ func (au *ArticleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: article.FieldVersion,
 		})
 	}
+	if value, ok := au.mutation.Iso(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: article.FieldIso,
+		})
+	}
+	if au.mutation.IsoCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: article.FieldIso,
+		})
+	}
 	if value, ok := au.mutation.ContentURL(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -962,6 +995,26 @@ func (auo *ArticleUpdateOne) AddVersion(u int32) *ArticleUpdateOne {
 // ClearVersion clears the value of the "version" field.
 func (auo *ArticleUpdateOne) ClearVersion() *ArticleUpdateOne {
 	auo.mutation.ClearVersion()
+	return auo
+}
+
+// SetIso sets the "iso" field.
+func (auo *ArticleUpdateOne) SetIso(s string) *ArticleUpdateOne {
+	auo.mutation.SetIso(s)
+	return auo
+}
+
+// SetNillableIso sets the "iso" field if the given value is not nil.
+func (auo *ArticleUpdateOne) SetNillableIso(s *string) *ArticleUpdateOne {
+	if s != nil {
+		auo.SetIso(*s)
+	}
+	return auo
+}
+
+// ClearIso clears the value of the "iso" field.
+func (auo *ArticleUpdateOne) ClearIso() *ArticleUpdateOne {
+	auo.mutation.ClearIso()
 	return auo
 }
 
@@ -1338,6 +1391,19 @@ func (auo *ArticleUpdateOne) sqlSave(ctx context.Context) (_node *Article, err e
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Column: article.FieldVersion,
+		})
+	}
+	if value, ok := auo.mutation.Iso(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: article.FieldIso,
+		})
+	}
+	if auo.mutation.IsoCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: article.FieldIso,
 		})
 	}
 	if value, ok := auo.mutation.ContentURL(); ok {

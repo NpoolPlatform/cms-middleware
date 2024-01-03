@@ -210,6 +210,20 @@ func (ac *ArticleCreate) SetNillableVersion(u *uint32) *ArticleCreate {
 	return ac
 }
 
+// SetIso sets the "iso" field.
+func (ac *ArticleCreate) SetIso(s string) *ArticleCreate {
+	ac.mutation.SetIso(s)
+	return ac
+}
+
+// SetNillableIso sets the "iso" field if the given value is not nil.
+func (ac *ArticleCreate) SetNillableIso(s *string) *ArticleCreate {
+	if s != nil {
+		ac.SetIso(*s)
+	}
+	return ac
+}
+
 // SetContentURL sets the "content_url" field.
 func (ac *ArticleCreate) SetContentURL(s string) *ArticleCreate {
 	ac.mutation.SetContentURL(s)
@@ -410,6 +424,10 @@ func (ac *ArticleCreate) defaults() error {
 		v := article.DefaultVersion
 		ac.mutation.SetVersion(v)
 	}
+	if _, ok := ac.mutation.Iso(); !ok {
+		v := article.DefaultIso
+		ac.mutation.SetIso(v)
+	}
 	if _, ok := ac.mutation.ContentURL(); !ok {
 		v := article.DefaultContentURL
 		ac.mutation.SetContentURL(v)
@@ -587,6 +605,14 @@ func (ac *ArticleCreate) createSpec() (*Article, *sqlgraph.CreateSpec) {
 			Column: article.FieldVersion,
 		})
 		_node.Version = value
+	}
+	if value, ok := ac.mutation.Iso(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: article.FieldIso,
+		})
+		_node.Iso = value
 	}
 	if value, ok := ac.mutation.ContentURL(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -909,6 +935,24 @@ func (u *ArticleUpsert) AddVersion(v uint32) *ArticleUpsert {
 // ClearVersion clears the value of the "version" field.
 func (u *ArticleUpsert) ClearVersion() *ArticleUpsert {
 	u.SetNull(article.FieldVersion)
+	return u
+}
+
+// SetIso sets the "iso" field.
+func (u *ArticleUpsert) SetIso(v string) *ArticleUpsert {
+	u.Set(article.FieldIso, v)
+	return u
+}
+
+// UpdateIso sets the "iso" field to the value that was provided on create.
+func (u *ArticleUpsert) UpdateIso() *ArticleUpsert {
+	u.SetExcluded(article.FieldIso)
+	return u
+}
+
+// ClearIso clears the value of the "iso" field.
+func (u *ArticleUpsert) ClearIso() *ArticleUpsert {
+	u.SetNull(article.FieldIso)
 	return u
 }
 
@@ -1306,6 +1350,27 @@ func (u *ArticleUpsertOne) UpdateVersion() *ArticleUpsertOne {
 func (u *ArticleUpsertOne) ClearVersion() *ArticleUpsertOne {
 	return u.Update(func(s *ArticleUpsert) {
 		s.ClearVersion()
+	})
+}
+
+// SetIso sets the "iso" field.
+func (u *ArticleUpsertOne) SetIso(v string) *ArticleUpsertOne {
+	return u.Update(func(s *ArticleUpsert) {
+		s.SetIso(v)
+	})
+}
+
+// UpdateIso sets the "iso" field to the value that was provided on create.
+func (u *ArticleUpsertOne) UpdateIso() *ArticleUpsertOne {
+	return u.Update(func(s *ArticleUpsert) {
+		s.UpdateIso()
+	})
+}
+
+// ClearIso clears the value of the "iso" field.
+func (u *ArticleUpsertOne) ClearIso() *ArticleUpsertOne {
+	return u.Update(func(s *ArticleUpsert) {
+		s.ClearIso()
 	})
 }
 
@@ -1878,6 +1943,27 @@ func (u *ArticleUpsertBulk) UpdateVersion() *ArticleUpsertBulk {
 func (u *ArticleUpsertBulk) ClearVersion() *ArticleUpsertBulk {
 	return u.Update(func(s *ArticleUpsert) {
 		s.ClearVersion()
+	})
+}
+
+// SetIso sets the "iso" field.
+func (u *ArticleUpsertBulk) SetIso(v string) *ArticleUpsertBulk {
+	return u.Update(func(s *ArticleUpsert) {
+		s.SetIso(v)
+	})
+}
+
+// UpdateIso sets the "iso" field to the value that was provided on create.
+func (u *ArticleUpsertBulk) UpdateIso() *ArticleUpsertBulk {
+	return u.Update(func(s *ArticleUpsert) {
+		s.UpdateIso()
+	})
+}
+
+// ClearIso clears the value of the "iso" field.
+func (u *ArticleUpsertBulk) ClearIso() *ArticleUpsertBulk {
+	return u.Update(func(s *ArticleUpsert) {
+		s.ClearIso()
 	})
 }
 

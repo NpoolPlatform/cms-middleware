@@ -132,16 +132,20 @@ func init() {
 	articleDescVersion := articleFields[9].Descriptor()
 	// article.DefaultVersion holds the default value on creation for the version field.
 	article.DefaultVersion = articleDescVersion.Default.(uint32)
+	// articleDescIso is the schema descriptor for iso field.
+	articleDescIso := articleFields[10].Descriptor()
+	// article.DefaultIso holds the default value on creation for the iso field.
+	article.DefaultIso = articleDescIso.Default.(string)
 	// articleDescContentURL is the schema descriptor for content_url field.
-	articleDescContentURL := articleFields[10].Descriptor()
+	articleDescContentURL := articleFields[11].Descriptor()
 	// article.DefaultContentURL holds the default value on creation for the content_url field.
 	article.DefaultContentURL = articleDescContentURL.Default.(string)
 	// articleDescLatest is the schema descriptor for latest field.
-	articleDescLatest := articleFields[11].Descriptor()
+	articleDescLatest := articleFields[12].Descriptor()
 	// article.DefaultLatest holds the default value on creation for the latest field.
 	article.DefaultLatest = articleDescLatest.Default.(bool)
 	// articleDescPublishedAt is the schema descriptor for published_at field.
-	articleDescPublishedAt := articleFields[12].Descriptor()
+	articleDescPublishedAt := articleFields[13].Descriptor()
 	// article.DefaultPublishedAt holds the default value on creation for the published_at field.
 	article.DefaultPublishedAt = articleDescPublishedAt.Default.(uint32)
 	categoryMixin := schema.Category{}.Mixin()

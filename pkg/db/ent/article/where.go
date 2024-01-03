@@ -177,6 +177,13 @@ func Version(v uint32) predicate.Article {
 	})
 }
 
+// Iso applies equality check predicate on the "iso" field. It's identical to IsoEQ.
+func Iso(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIso), v))
+	})
+}
+
 // ContentURL applies equality check predicate on the "content_url" field. It's identical to ContentURLEQ.
 func ContentURL(v string) predicate.Article {
 	return predicate.Article(func(s *sql.Selector) {
@@ -1392,6 +1399,119 @@ func VersionIsNil() predicate.Article {
 func VersionNotNil() predicate.Article {
 	return predicate.Article(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldVersion)))
+	})
+}
+
+// IsoEQ applies the EQ predicate on the "iso" field.
+func IsoEQ(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIso), v))
+	})
+}
+
+// IsoNEQ applies the NEQ predicate on the "iso" field.
+func IsoNEQ(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIso), v))
+	})
+}
+
+// IsoIn applies the In predicate on the "iso" field.
+func IsoIn(vs ...string) predicate.Article {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldIso), v...))
+	})
+}
+
+// IsoNotIn applies the NotIn predicate on the "iso" field.
+func IsoNotIn(vs ...string) predicate.Article {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldIso), v...))
+	})
+}
+
+// IsoGT applies the GT predicate on the "iso" field.
+func IsoGT(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldIso), v))
+	})
+}
+
+// IsoGTE applies the GTE predicate on the "iso" field.
+func IsoGTE(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldIso), v))
+	})
+}
+
+// IsoLT applies the LT predicate on the "iso" field.
+func IsoLT(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldIso), v))
+	})
+}
+
+// IsoLTE applies the LTE predicate on the "iso" field.
+func IsoLTE(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldIso), v))
+	})
+}
+
+// IsoContains applies the Contains predicate on the "iso" field.
+func IsoContains(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldIso), v))
+	})
+}
+
+// IsoHasPrefix applies the HasPrefix predicate on the "iso" field.
+func IsoHasPrefix(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldIso), v))
+	})
+}
+
+// IsoHasSuffix applies the HasSuffix predicate on the "iso" field.
+func IsoHasSuffix(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldIso), v))
+	})
+}
+
+// IsoIsNil applies the IsNil predicate on the "iso" field.
+func IsoIsNil() predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldIso)))
+	})
+}
+
+// IsoNotNil applies the NotNil predicate on the "iso" field.
+func IsoNotNil() predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldIso)))
+	})
+}
+
+// IsoEqualFold applies the EqualFold predicate on the "iso" field.
+func IsoEqualFold(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldIso), v))
+	})
+}
+
+// IsoContainsFold applies the ContainsFold predicate on the "iso" field.
+func IsoContainsFold(v string) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldIso), v))
 	})
 }
 

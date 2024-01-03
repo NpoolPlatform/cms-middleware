@@ -62,6 +62,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			article.FieldStatus:      {Type: field.TypeString, Column: article.FieldStatus},
 			article.FieldHost:        {Type: field.TypeString, Column: article.FieldHost},
 			article.FieldVersion:     {Type: field.TypeUint32, Column: article.FieldVersion},
+			article.FieldIso:         {Type: field.TypeString, Column: article.FieldIso},
 			article.FieldContentURL:  {Type: field.TypeString, Column: article.FieldContentURL},
 			article.FieldLatest:      {Type: field.TypeBool, Column: article.FieldLatest},
 			article.FieldPublishedAt: {Type: field.TypeUint32, Column: article.FieldPublishedAt},
@@ -303,6 +304,11 @@ func (f *ArticleFilter) WhereHost(p entql.StringP) {
 // WhereVersion applies the entql uint32 predicate on the version field.
 func (f *ArticleFilter) WhereVersion(p entql.Uint32P) {
 	f.Where(p.Field(article.FieldVersion))
+}
+
+// WhereIso applies the entql string predicate on the iso field.
+func (f *ArticleFilter) WhereIso(p entql.StringP) {
+	f.Where(p.Field(article.FieldIso))
 }
 
 // WhereContentURL applies the entql string predicate on the content_url field.

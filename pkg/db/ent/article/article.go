@@ -40,6 +40,8 @@ const (
 	FieldHost = "host"
 	// FieldVersion holds the string denoting the version field in the database.
 	FieldVersion = "version"
+	// FieldIso holds the string denoting the iso field in the database.
+	FieldIso = "iso"
 	// FieldContentURL holds the string denoting the content_url field in the database.
 	FieldContentURL = "content_url"
 	// FieldLatest holds the string denoting the latest field in the database.
@@ -67,6 +69,7 @@ var Columns = []string{
 	FieldStatus,
 	FieldHost,
 	FieldVersion,
+	FieldIso,
 	FieldContentURL,
 	FieldLatest,
 	FieldPublishedAt,
@@ -119,6 +122,8 @@ var (
 	DefaultHost string
 	// DefaultVersion holds the default value on creation for the "version" field.
 	DefaultVersion uint32
+	// DefaultIso holds the default value on creation for the "iso" field.
+	DefaultIso string
 	// DefaultContentURL holds the default value on creation for the "content_url" field.
 	DefaultContentURL string
 	// DefaultLatest holds the default value on creation for the "latest" field.

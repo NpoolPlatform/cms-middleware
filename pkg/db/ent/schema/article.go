@@ -69,6 +69,10 @@ func (Article) Fields() []ent.Field {
 			Optional().
 			Default(1),
 		field.
+			String("iso").
+			Optional().
+			Default(""),
+		field.
 			Text("content_url").
 			Optional().
 			Default(""),

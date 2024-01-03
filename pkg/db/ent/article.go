@@ -44,6 +44,8 @@ type Article struct {
 	Host string `json:"host,omitempty"`
 	// Version holds the value of the "version" field.
 	Version uint32 `json:"version,omitempty"`
+	// Iso holds the value of the "iso" field.
+	Iso string `json:"iso,omitempty"`
 	// ContentURL holds the value of the "content_url" field.
 	ContentURL string `json:"content_url,omitempty"`
 	// Latest holds the value of the "latest" field.
@@ -61,7 +63,7 @@ func (*Article) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case article.FieldID, article.FieldCreatedAt, article.FieldUpdatedAt, article.FieldDeletedAt, article.FieldVersion, article.FieldPublishedAt:
 			values[i] = new(sql.NullInt64)
-		case article.FieldTitle, article.FieldSubtitle, article.FieldDigest, article.FieldStatus, article.FieldHost, article.FieldContentURL:
+		case article.FieldTitle, article.FieldSubtitle, article.FieldDigest, article.FieldStatus, article.FieldHost, article.FieldIso, article.FieldContentURL:
 			values[i] = new(sql.NullString)
 		case article.FieldEntID, article.FieldAppID, article.FieldCategoryID, article.FieldAuthorID, article.FieldArticleKey:
 			values[i] = new(uuid.UUID)
@@ -170,6 +172,12 @@ func (a *Article) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				a.Version = uint32(value.Int64)
 			}
+		case article.FieldIso:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field iso", values[i])
+			} else if value.Valid {
+				a.Iso = value.String
+			}
 		case article.FieldContentURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field content_url", values[i])
@@ -257,6 +265,9 @@ func (a *Article) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("version=")
 	builder.WriteString(fmt.Sprintf("%v", a.Version))
+	builder.WriteString(", ")
+	builder.WriteString("iso=")
+	builder.WriteString(a.Iso)
 	builder.WriteString(", ")
 	builder.WriteString("content_url=")
 	builder.WriteString(a.ContentURL)

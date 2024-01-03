@@ -841,6 +841,7 @@ type ArticleMutation struct {
 	host            *string
 	version         *uint32
 	addversion      *int32
+	iso             *string
 	content_url     *string
 	latest          *bool
 	published_at    *uint32
@@ -1657,6 +1658,55 @@ func (m *ArticleMutation) ResetVersion() {
 	delete(m.clearedFields, article.FieldVersion)
 }
 
+// SetIso sets the "iso" field.
+func (m *ArticleMutation) SetIso(s string) {
+	m.iso = &s
+}
+
+// Iso returns the value of the "iso" field in the mutation.
+func (m *ArticleMutation) Iso() (r string, exists bool) {
+	v := m.iso
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIso returns the old "iso" field's value of the Article entity.
+// If the Article object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArticleMutation) OldIso(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIso is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIso requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIso: %w", err)
+	}
+	return oldValue.Iso, nil
+}
+
+// ClearIso clears the value of the "iso" field.
+func (m *ArticleMutation) ClearIso() {
+	m.iso = nil
+	m.clearedFields[article.FieldIso] = struct{}{}
+}
+
+// IsoCleared returns if the "iso" field was cleared in this mutation.
+func (m *ArticleMutation) IsoCleared() bool {
+	_, ok := m.clearedFields[article.FieldIso]
+	return ok
+}
+
+// ResetIso resets all changes to the "iso" field.
+func (m *ArticleMutation) ResetIso() {
+	m.iso = nil
+	delete(m.clearedFields, article.FieldIso)
+}
+
 // SetContentURL sets the "content_url" field.
 func (m *ArticleMutation) SetContentURL(s string) {
 	m.content_url = &s
@@ -1844,7 +1894,7 @@ func (m *ArticleMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ArticleMutation) Fields() []string {
-	fields := make([]string, 0, 17)
+	fields := make([]string, 0, 18)
 	if m.created_at != nil {
 		fields = append(fields, article.FieldCreatedAt)
 	}
@@ -1886,6 +1936,9 @@ func (m *ArticleMutation) Fields() []string {
 	}
 	if m.version != nil {
 		fields = append(fields, article.FieldVersion)
+	}
+	if m.iso != nil {
+		fields = append(fields, article.FieldIso)
 	}
 	if m.content_url != nil {
 		fields = append(fields, article.FieldContentURL)
@@ -1932,6 +1985,8 @@ func (m *ArticleMutation) Field(name string) (ent.Value, bool) {
 		return m.Host()
 	case article.FieldVersion:
 		return m.Version()
+	case article.FieldIso:
+		return m.Iso()
 	case article.FieldContentURL:
 		return m.ContentURL()
 	case article.FieldLatest:
@@ -1975,6 +2030,8 @@ func (m *ArticleMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldHost(ctx)
 	case article.FieldVersion:
 		return m.OldVersion(ctx)
+	case article.FieldIso:
+		return m.OldIso(ctx)
 	case article.FieldContentURL:
 		return m.OldContentURL(ctx)
 	case article.FieldLatest:
@@ -2087,6 +2144,13 @@ func (m *ArticleMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetVersion(v)
+		return nil
+	case article.FieldIso:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIso(v)
 		return nil
 	case article.FieldContentURL:
 		v, ok := value.(string)
@@ -2229,6 +2293,9 @@ func (m *ArticleMutation) ClearedFields() []string {
 	if m.FieldCleared(article.FieldVersion) {
 		fields = append(fields, article.FieldVersion)
 	}
+	if m.FieldCleared(article.FieldIso) {
+		fields = append(fields, article.FieldIso)
+	}
 	if m.FieldCleared(article.FieldContentURL) {
 		fields = append(fields, article.FieldContentURL)
 	}
@@ -2278,6 +2345,9 @@ func (m *ArticleMutation) ClearField(name string) error {
 		return nil
 	case article.FieldVersion:
 		m.ClearVersion()
+		return nil
+	case article.FieldIso:
+		m.ClearIso()
 		return nil
 	case article.FieldContentURL:
 		m.ClearContentURL()
@@ -2337,6 +2407,9 @@ func (m *ArticleMutation) ResetField(name string) error {
 		return nil
 	case article.FieldVersion:
 		m.ResetVersion()
+		return nil
+	case article.FieldIso:
+		m.ResetIso()
 		return nil
 	case article.FieldContentURL:
 		m.ResetContentURL()
