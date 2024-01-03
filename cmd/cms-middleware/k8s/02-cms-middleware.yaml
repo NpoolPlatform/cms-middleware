@@ -21,7 +21,7 @@ spec:
           imagePullPolicy: Always
           volumeMounts:
             - name: service-config
-              mountPath: /etc/CmsMiddleware
+              mountPath: /etc/CMSMiddleware
           env:
             - name: ENV_ENVIRONMENT_TARGET
               valueFrom:
@@ -48,7 +48,7 @@ spec:
             name: cms-middleware-config
             items:
               - key: service-conf
-                path: CmsMiddleware.viper.yaml
+                path: CMSMiddleware.viper.yaml
 ---
 apiVersion: v1
 kind: Service
