@@ -131,7 +131,7 @@ func (h *queryHandler) queryACLRoles(ctx context.Context) error {
 	akeys := []uuid.UUID{}
 
 	for _, info := range h.infos {
-		akeys = append(akeys, uuid.MustParse(info.EntID))
+		akeys = append(akeys, uuid.MustParse(info.ArticleKey))
 	}
 
 	err := db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
