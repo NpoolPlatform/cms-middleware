@@ -75,6 +75,7 @@ func (h *queryHandler) queryJoinMyself(s *sql.Selector) {
 			sql.As(t.C(entarticle.FieldIso), "iso"),
 			sql.As(t.C(entarticle.FieldContentURL), "content_url"),
 			sql.As(t.C(entarticle.FieldPublishedAt), "published_at"),
+			sql.As(t.C(entarticle.FieldACLEnabled), "acl_enabled"),
 		)
 }
 

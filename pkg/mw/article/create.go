@@ -124,6 +124,7 @@ func (h *createHandler) createArticle(ctx context.Context, tx *ent.Tx) error {
 			Host:       h.Host,
 			ISO:        h.ISO,
 			ContentURL: h.ContentURL,
+			ACLEnabled: h.ACLEnabled,
 		},
 	).Save(ctx); err != nil {
 		return err

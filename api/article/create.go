@@ -36,6 +36,7 @@ func (s *Server) CreateArticle(ctx context.Context, in *npool.CreateArticleReque
 		article1.WithISO(req.ISO, true),
 		article1.WithContentURL(req.ContentURL, true),
 		article1.WithVersion(req.Version, true),
+		article1.WithACLEnabled(req.ACLEnabled, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

@@ -54,6 +54,7 @@ var ret = &npool.Article{
 	Version:      1,
 	Latest:       true,
 	ContentURL:   uuid.NewString(),
+	ACLEnabled:   true,
 }
 
 var req = &npool.ArticleReq{
@@ -69,6 +70,7 @@ var req = &npool.ArticleReq{
 	Host:       &ret.Host,
 	ISO:        &ret.ISO,
 	Version:    &ret.Version,
+	ACLEnabled: &ret.ACLEnabled,
 }
 
 var slug = uuid.NewString()
@@ -135,6 +137,7 @@ func getArticles(t *testing.T) {
 		Latest:     &basetypes.BoolVal{Op: cruder.EQ, Value: ret.Latest},
 		Host:       &basetypes.StringVal{Op: cruder.EQ, Value: ret.Host},
 		ContentURL: &basetypes.StringVal{Op: cruder.EQ, Value: ret.ContentURL},
+		ACLEnabled: &basetypes.BoolVal{Op: cruder.EQ, Value: ret.ACLEnabled},
 	}, int32(0), int32(2))
 	if assert.Nil(t, err) {
 		if assert.Equal(t, uint32(1), total) {
@@ -159,6 +162,7 @@ func getArticleOnly(t *testing.T) {
 		Latest:     &basetypes.BoolVal{Op: cruder.EQ, Value: ret.Latest},
 		Host:       &basetypes.StringVal{Op: cruder.EQ, Value: ret.Host},
 		ContentURL: &basetypes.StringVal{Op: cruder.EQ, Value: ret.ContentURL},
+		ACLEnabled: &basetypes.BoolVal{Op: cruder.EQ, Value: ret.ACLEnabled},
 	})
 	if assert.Nil(t, err) {
 		assert.Equal(t, ret, info)

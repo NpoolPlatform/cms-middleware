@@ -47,6 +47,7 @@ var (
 		Version:      1,
 		Latest:       true,
 		ContentURL:   uuid.NewString(),
+		ACLEnabled:   true,
 	}
 )
 
@@ -84,6 +85,7 @@ func createArticle(t *testing.T) {
 		WithHost(&ret.Host, true),
 		WithISO(&ret.ISO, true),
 		WithVersion(&ret.Version, true),
+		WithACLEnabled(&ret.ACLEnabled, true),
 	)
 	assert.Nil(t, err)
 
@@ -162,6 +164,7 @@ func getArticles(t *testing.T) {
 		Version:    &basetypes.Uint32Val{Op: cruder.EQ, Value: ret.Version},
 		Latest:     &basetypes.BoolVal{Op: cruder.EQ, Value: ret.Latest},
 		ContentURL: &basetypes.StringVal{Op: cruder.EQ, Value: ret.ContentURL},
+		ACLEnabled: &basetypes.BoolVal{Op: cruder.EQ, Value: ret.ACLEnabled},
 	}
 
 	handler, err := NewHandler(

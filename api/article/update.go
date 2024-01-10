@@ -32,6 +32,7 @@ func (s *Server) UpdateArticle(ctx context.Context, in *npool.UpdateArticleReque
 		article1.WithStatus(req.Status, false),
 		article1.WithContentURL(req.ContentURL, false),
 		article1.WithLatest(req.Latest, false),
+		article1.WithACLEnabled(req.ACLEnabled, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

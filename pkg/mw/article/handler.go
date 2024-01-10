@@ -31,6 +31,7 @@ type Handler struct {
 	Host        *string
 	ISO         *string
 	PublishedAt *uint32
+	ACLEnabled  *bool
 	Conds       *articlecrud.Conds
 	Offset      int32
 	Limit       int32
@@ -239,6 +240,20 @@ func WithLatest(latest *bool, must bool) func(context.Context, *Handler) error {
 	}
 }
 
+func WithACLEnabled(aclenabled *bool, must bool) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if aclenabled == nil {
+			if must {
+				return fmt.Errorf("invalid aclenabled")
+			}
+			return nil
+		}
+
+		h.ACLEnabled = aclenabled
+		return nil
+	}
+}
+
 func WithContentURL(url *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if url == nil {
@@ -358,6 +373,9 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 		if conds.ContentURL != nil {
 			h.Conds.ContentURL = &cruder.Cond{Op: conds.GetContentURL().GetOp(), Val: conds.GetContentURL().GetValue()}
+		}
+		if conds.ACLEnabled != nil {
+			h.Conds.ACLEnabled = &cruder.Cond{Op: conds.GetACLEnabled().GetOp(), Val: conds.GetACLEnabled().GetValue()}
 		}
 
 		return nil

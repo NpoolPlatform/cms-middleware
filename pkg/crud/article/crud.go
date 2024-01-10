@@ -25,6 +25,7 @@ type Req struct {
 	Host        *string
 	ISO         *string
 	ContentURL  *string
+	ACLEnabled  *bool
 	PublishedAt *uint32
 	DeletedAt   *uint32
 }
@@ -76,6 +77,9 @@ func CreateSet(c *ent.ArticleCreate, req *Req) *ent.ArticleCreate {
 	if req.ISO != nil {
 		c.SetIso(*req.ISO)
 	}
+	if req.ACLEnabled != nil {
+		c.SetACLEnabled(*req.ACLEnabled)
+	}
 
 	return c
 }
@@ -105,6 +109,9 @@ func UpdateSet(u *ent.ArticleUpdateOne, req *Req) *ent.ArticleUpdateOne {
 	if req.PublishedAt != nil {
 		u.SetPublishedAt(*req.PublishedAt)
 	}
+	if req.ACLEnabled != nil {
+		u.SetACLEnabled(*req.ACLEnabled)
+	}
 	if req.DeletedAt != nil {
 		u.SetDeletedAt(*req.DeletedAt)
 	}
@@ -129,6 +136,7 @@ type Conds struct {
 	ISO        *cruder.Cond
 	IDs        *cruder.Cond
 	EntIDs     *cruder.Cond
+	ACLEnabled *cruder.Cond
 }
 
 //nolint
@@ -388,6 +396,21 @@ func SetQueryConds(q *ent.ArticleQuery, conds *Conds) (*ent.ArticleQuery, error)
 			)
 		default:
 			return nil, fmt.Errorf("invalid iso field")
+		}
+	}
+	if conds.ACLEnabled != nil {
+		aclenabled, ok := conds.ACLEnabled.Val.(bool)
+		if !ok {
+			return nil, fmt.Errorf("invalid aclenabled")
+		}
+		switch conds.ACLEnabled.Op {
+		case cruder.EQ:
+			q.Where(
+				entarticle.ACLEnabled(aclenabled),
+				entarticle.DeletedAt(0),
+			)
+		default:
+			return nil, fmt.Errorf("invalid aclenabled field")
 		}
 	}
 	return q, nil

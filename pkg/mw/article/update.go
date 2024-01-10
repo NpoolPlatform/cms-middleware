@@ -45,6 +45,7 @@ func (h *updateHandler) updateArticle(ctx context.Context, tx *ent.Tx) error {
 			Status:     h.Status,
 			Latest:     h.Latest,
 			ContentURL: h.ContentURL,
+			ACLEnabled: h.ACLEnabled,
 		},
 	).Save(ctx); err != nil {
 		return err
