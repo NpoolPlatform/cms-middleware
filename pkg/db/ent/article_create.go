@@ -266,6 +266,20 @@ func (ac *ArticleCreate) SetNillablePublishedAt(u *uint32) *ArticleCreate {
 	return ac
 }
 
+// SetACLEnabled sets the "acl_enabled" field.
+func (ac *ArticleCreate) SetACLEnabled(b bool) *ArticleCreate {
+	ac.mutation.SetACLEnabled(b)
+	return ac
+}
+
+// SetNillableACLEnabled sets the "acl_enabled" field if the given value is not nil.
+func (ac *ArticleCreate) SetNillableACLEnabled(b *bool) *ArticleCreate {
+	if b != nil {
+		ac.SetACLEnabled(*b)
+	}
+	return ac
+}
+
 // SetID sets the "id" field.
 func (ac *ArticleCreate) SetID(u uint32) *ArticleCreate {
 	ac.mutation.SetID(u)
@@ -439,6 +453,10 @@ func (ac *ArticleCreate) defaults() error {
 	if _, ok := ac.mutation.PublishedAt(); !ok {
 		v := article.DefaultPublishedAt
 		ac.mutation.SetPublishedAt(v)
+	}
+	if _, ok := ac.mutation.ACLEnabled(); !ok {
+		v := article.DefaultACLEnabled
+		ac.mutation.SetACLEnabled(v)
 	}
 	return nil
 }
@@ -637,6 +655,14 @@ func (ac *ArticleCreate) createSpec() (*Article, *sqlgraph.CreateSpec) {
 			Column: article.FieldPublishedAt,
 		})
 		_node.PublishedAt = value
+	}
+	if value, ok := ac.mutation.ACLEnabled(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: article.FieldACLEnabled,
+		})
+		_node.ACLEnabled = value
 	}
 	return _node, _spec
 }
@@ -1013,6 +1039,24 @@ func (u *ArticleUpsert) AddPublishedAt(v uint32) *ArticleUpsert {
 // ClearPublishedAt clears the value of the "published_at" field.
 func (u *ArticleUpsert) ClearPublishedAt() *ArticleUpsert {
 	u.SetNull(article.FieldPublishedAt)
+	return u
+}
+
+// SetACLEnabled sets the "acl_enabled" field.
+func (u *ArticleUpsert) SetACLEnabled(v bool) *ArticleUpsert {
+	u.Set(article.FieldACLEnabled, v)
+	return u
+}
+
+// UpdateACLEnabled sets the "acl_enabled" field to the value that was provided on create.
+func (u *ArticleUpsert) UpdateACLEnabled() *ArticleUpsert {
+	u.SetExcluded(article.FieldACLEnabled)
+	return u
+}
+
+// ClearACLEnabled clears the value of the "acl_enabled" field.
+func (u *ArticleUpsert) ClearACLEnabled() *ArticleUpsert {
+	u.SetNull(article.FieldACLEnabled)
 	return u
 }
 
@@ -1441,6 +1485,27 @@ func (u *ArticleUpsertOne) UpdatePublishedAt() *ArticleUpsertOne {
 func (u *ArticleUpsertOne) ClearPublishedAt() *ArticleUpsertOne {
 	return u.Update(func(s *ArticleUpsert) {
 		s.ClearPublishedAt()
+	})
+}
+
+// SetACLEnabled sets the "acl_enabled" field.
+func (u *ArticleUpsertOne) SetACLEnabled(v bool) *ArticleUpsertOne {
+	return u.Update(func(s *ArticleUpsert) {
+		s.SetACLEnabled(v)
+	})
+}
+
+// UpdateACLEnabled sets the "acl_enabled" field to the value that was provided on create.
+func (u *ArticleUpsertOne) UpdateACLEnabled() *ArticleUpsertOne {
+	return u.Update(func(s *ArticleUpsert) {
+		s.UpdateACLEnabled()
+	})
+}
+
+// ClearACLEnabled clears the value of the "acl_enabled" field.
+func (u *ArticleUpsertOne) ClearACLEnabled() *ArticleUpsertOne {
+	return u.Update(func(s *ArticleUpsert) {
+		s.ClearACLEnabled()
 	})
 }
 
@@ -2034,6 +2099,27 @@ func (u *ArticleUpsertBulk) UpdatePublishedAt() *ArticleUpsertBulk {
 func (u *ArticleUpsertBulk) ClearPublishedAt() *ArticleUpsertBulk {
 	return u.Update(func(s *ArticleUpsert) {
 		s.ClearPublishedAt()
+	})
+}
+
+// SetACLEnabled sets the "acl_enabled" field.
+func (u *ArticleUpsertBulk) SetACLEnabled(v bool) *ArticleUpsertBulk {
+	return u.Update(func(s *ArticleUpsert) {
+		s.SetACLEnabled(v)
+	})
+}
+
+// UpdateACLEnabled sets the "acl_enabled" field to the value that was provided on create.
+func (u *ArticleUpsertBulk) UpdateACLEnabled() *ArticleUpsertBulk {
+	return u.Update(func(s *ArticleUpsert) {
+		s.UpdateACLEnabled()
+	})
+}
+
+// ClearACLEnabled clears the value of the "acl_enabled" field.
+func (u *ArticleUpsertBulk) ClearACLEnabled() *ArticleUpsertBulk {
+	return u.Update(func(s *ArticleUpsert) {
+		s.ClearACLEnabled()
 	})
 }
 

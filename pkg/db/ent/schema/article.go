@@ -84,6 +84,10 @@ func (Article) Fields() []ent.Field {
 			Uint32("published_at").
 			Optional().
 			Default(0),
+		field.
+			Bool("acl_enabled").
+			Optional().
+			Default(true),
 	}
 }
 

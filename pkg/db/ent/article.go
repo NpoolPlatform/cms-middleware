@@ -52,6 +52,8 @@ type Article struct {
 	Latest bool `json:"latest,omitempty"`
 	// PublishedAt holds the value of the "published_at" field.
 	PublishedAt uint32 `json:"published_at,omitempty"`
+	// ACLEnabled holds the value of the "acl_enabled" field.
+	ACLEnabled bool `json:"acl_enabled,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -59,7 +61,7 @@ func (*Article) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case article.FieldLatest:
+		case article.FieldLatest, article.FieldACLEnabled:
 			values[i] = new(sql.NullBool)
 		case article.FieldID, article.FieldCreatedAt, article.FieldUpdatedAt, article.FieldDeletedAt, article.FieldVersion, article.FieldPublishedAt:
 			values[i] = new(sql.NullInt64)
@@ -196,6 +198,12 @@ func (a *Article) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				a.PublishedAt = uint32(value.Int64)
 			}
+		case article.FieldACLEnabled:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field acl_enabled", values[i])
+			} else if value.Valid {
+				a.ACLEnabled = value.Bool
+			}
 		}
 	}
 	return nil
@@ -277,6 +285,9 @@ func (a *Article) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("published_at=")
 	builder.WriteString(fmt.Sprintf("%v", a.PublishedAt))
+	builder.WriteString(", ")
+	builder.WriteString("acl_enabled=")
+	builder.WriteString(fmt.Sprintf("%v", a.ACLEnabled))
 	builder.WriteByte(')')
 	return builder.String()
 }

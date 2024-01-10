@@ -66,6 +66,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			article.FieldContentURL:  {Type: field.TypeString, Column: article.FieldContentURL},
 			article.FieldLatest:      {Type: field.TypeBool, Column: article.FieldLatest},
 			article.FieldPublishedAt: {Type: field.TypeUint32, Column: article.FieldPublishedAt},
+			article.FieldACLEnabled:  {Type: field.TypeBool, Column: article.FieldACLEnabled},
 		},
 	}
 	graph.Nodes[2] = &sqlgraph.Node{
@@ -324,6 +325,11 @@ func (f *ArticleFilter) WhereLatest(p entql.BoolP) {
 // WherePublishedAt applies the entql uint32 predicate on the published_at field.
 func (f *ArticleFilter) WherePublishedAt(p entql.Uint32P) {
 	f.Where(p.Field(article.FieldPublishedAt))
+}
+
+// WhereACLEnabled applies the entql bool predicate on the acl_enabled field.
+func (f *ArticleFilter) WhereACLEnabled(p entql.BoolP) {
+	f.Where(p.Field(article.FieldACLEnabled))
 }
 
 // addPredicate implements the predicateAdder interface.

@@ -205,6 +205,13 @@ func PublishedAt(v uint32) predicate.Article {
 	})
 }
 
+// ACLEnabled applies equality check predicate on the "acl_enabled" field. It's identical to ACLEnabledEQ.
+func ACLEnabled(v bool) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldACLEnabled), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.Article {
 	return predicate.Article(func(s *sql.Selector) {
@@ -1731,6 +1738,34 @@ func PublishedAtIsNil() predicate.Article {
 func PublishedAtNotNil() predicate.Article {
 	return predicate.Article(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldPublishedAt)))
+	})
+}
+
+// ACLEnabledEQ applies the EQ predicate on the "acl_enabled" field.
+func ACLEnabledEQ(v bool) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldACLEnabled), v))
+	})
+}
+
+// ACLEnabledNEQ applies the NEQ predicate on the "acl_enabled" field.
+func ACLEnabledNEQ(v bool) predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldACLEnabled), v))
+	})
+}
+
+// ACLEnabledIsNil applies the IsNil predicate on the "acl_enabled" field.
+func ACLEnabledIsNil() predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldACLEnabled)))
+	})
+}
+
+// ACLEnabledNotNil applies the NotNil predicate on the "acl_enabled" field.
+func ACLEnabledNotNil() predicate.Article {
+	return predicate.Article(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldACLEnabled)))
 	})
 }
 

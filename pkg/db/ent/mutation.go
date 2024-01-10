@@ -846,6 +846,7 @@ type ArticleMutation struct {
 	latest          *bool
 	published_at    *uint32
 	addpublished_at *int32
+	acl_enabled     *bool
 	clearedFields   map[string]struct{}
 	done            bool
 	oldValue        func(context.Context) (*Article, error)
@@ -1875,6 +1876,55 @@ func (m *ArticleMutation) ResetPublishedAt() {
 	delete(m.clearedFields, article.FieldPublishedAt)
 }
 
+// SetACLEnabled sets the "acl_enabled" field.
+func (m *ArticleMutation) SetACLEnabled(b bool) {
+	m.acl_enabled = &b
+}
+
+// ACLEnabled returns the value of the "acl_enabled" field in the mutation.
+func (m *ArticleMutation) ACLEnabled() (r bool, exists bool) {
+	v := m.acl_enabled
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldACLEnabled returns the old "acl_enabled" field's value of the Article entity.
+// If the Article object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArticleMutation) OldACLEnabled(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldACLEnabled is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldACLEnabled requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldACLEnabled: %w", err)
+	}
+	return oldValue.ACLEnabled, nil
+}
+
+// ClearACLEnabled clears the value of the "acl_enabled" field.
+func (m *ArticleMutation) ClearACLEnabled() {
+	m.acl_enabled = nil
+	m.clearedFields[article.FieldACLEnabled] = struct{}{}
+}
+
+// ACLEnabledCleared returns if the "acl_enabled" field was cleared in this mutation.
+func (m *ArticleMutation) ACLEnabledCleared() bool {
+	_, ok := m.clearedFields[article.FieldACLEnabled]
+	return ok
+}
+
+// ResetACLEnabled resets all changes to the "acl_enabled" field.
+func (m *ArticleMutation) ResetACLEnabled() {
+	m.acl_enabled = nil
+	delete(m.clearedFields, article.FieldACLEnabled)
+}
+
 // Where appends a list predicates to the ArticleMutation builder.
 func (m *ArticleMutation) Where(ps ...predicate.Article) {
 	m.predicates = append(m.predicates, ps...)
@@ -1894,7 +1944,7 @@ func (m *ArticleMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ArticleMutation) Fields() []string {
-	fields := make([]string, 0, 18)
+	fields := make([]string, 0, 19)
 	if m.created_at != nil {
 		fields = append(fields, article.FieldCreatedAt)
 	}
@@ -1949,6 +1999,9 @@ func (m *ArticleMutation) Fields() []string {
 	if m.published_at != nil {
 		fields = append(fields, article.FieldPublishedAt)
 	}
+	if m.acl_enabled != nil {
+		fields = append(fields, article.FieldACLEnabled)
+	}
 	return fields
 }
 
@@ -1993,6 +2046,8 @@ func (m *ArticleMutation) Field(name string) (ent.Value, bool) {
 		return m.Latest()
 	case article.FieldPublishedAt:
 		return m.PublishedAt()
+	case article.FieldACLEnabled:
+		return m.ACLEnabled()
 	}
 	return nil, false
 }
@@ -2038,6 +2093,8 @@ func (m *ArticleMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldLatest(ctx)
 	case article.FieldPublishedAt:
 		return m.OldPublishedAt(ctx)
+	case article.FieldACLEnabled:
+		return m.OldACLEnabled(ctx)
 	}
 	return nil, fmt.Errorf("unknown Article field %s", name)
 }
@@ -2173,6 +2230,13 @@ func (m *ArticleMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPublishedAt(v)
 		return nil
+	case article.FieldACLEnabled:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetACLEnabled(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Article field %s", name)
 }
@@ -2305,6 +2369,9 @@ func (m *ArticleMutation) ClearedFields() []string {
 	if m.FieldCleared(article.FieldPublishedAt) {
 		fields = append(fields, article.FieldPublishedAt)
 	}
+	if m.FieldCleared(article.FieldACLEnabled) {
+		fields = append(fields, article.FieldACLEnabled)
+	}
 	return fields
 }
 
@@ -2357,6 +2424,9 @@ func (m *ArticleMutation) ClearField(name string) error {
 		return nil
 	case article.FieldPublishedAt:
 		m.ClearPublishedAt()
+		return nil
+	case article.FieldACLEnabled:
+		m.ClearACLEnabled()
 		return nil
 	}
 	return fmt.Errorf("unknown Article nullable field %s", name)
@@ -2419,6 +2489,9 @@ func (m *ArticleMutation) ResetField(name string) error {
 		return nil
 	case article.FieldPublishedAt:
 		m.ResetPublishedAt()
+		return nil
+	case article.FieldACLEnabled:
+		m.ResetACLEnabled()
 		return nil
 	}
 	return fmt.Errorf("unknown Article field %s", name)

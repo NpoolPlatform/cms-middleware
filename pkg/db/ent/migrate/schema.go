@@ -54,6 +54,7 @@ var (
 		{Name: "content_url", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
 		{Name: "latest", Type: field.TypeBool, Nullable: true, Default: true},
 		{Name: "published_at", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "acl_enabled", Type: field.TypeBool, Nullable: true, Default: true},
 	}
 	// ArticlesTable holds the schema information for the "articles" table.
 	ArticlesTable = &schema.Table{

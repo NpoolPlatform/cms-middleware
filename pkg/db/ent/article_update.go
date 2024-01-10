@@ -378,6 +378,26 @@ func (au *ArticleUpdate) ClearPublishedAt() *ArticleUpdate {
 	return au
 }
 
+// SetACLEnabled sets the "acl_enabled" field.
+func (au *ArticleUpdate) SetACLEnabled(b bool) *ArticleUpdate {
+	au.mutation.SetACLEnabled(b)
+	return au
+}
+
+// SetNillableACLEnabled sets the "acl_enabled" field if the given value is not nil.
+func (au *ArticleUpdate) SetNillableACLEnabled(b *bool) *ArticleUpdate {
+	if b != nil {
+		au.SetACLEnabled(*b)
+	}
+	return au
+}
+
+// ClearACLEnabled clears the value of the "acl_enabled" field.
+func (au *ArticleUpdate) ClearACLEnabled() *ArticleUpdate {
+	au.mutation.ClearACLEnabled()
+	return au
+}
+
 // Mutation returns the ArticleMutation object of the builder.
 func (au *ArticleUpdate) Mutation() *ArticleMutation {
 	return au.mutation
@@ -713,6 +733,19 @@ func (au *ArticleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Column: article.FieldPublishedAt,
+		})
+	}
+	if value, ok := au.mutation.ACLEnabled(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: article.FieldACLEnabled,
+		})
+	}
+	if au.mutation.ACLEnabledCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Column: article.FieldACLEnabled,
 		})
 	}
 	_spec.Modifiers = au.modifiers
@@ -1085,6 +1118,26 @@ func (auo *ArticleUpdateOne) ClearPublishedAt() *ArticleUpdateOne {
 	return auo
 }
 
+// SetACLEnabled sets the "acl_enabled" field.
+func (auo *ArticleUpdateOne) SetACLEnabled(b bool) *ArticleUpdateOne {
+	auo.mutation.SetACLEnabled(b)
+	return auo
+}
+
+// SetNillableACLEnabled sets the "acl_enabled" field if the given value is not nil.
+func (auo *ArticleUpdateOne) SetNillableACLEnabled(b *bool) *ArticleUpdateOne {
+	if b != nil {
+		auo.SetACLEnabled(*b)
+	}
+	return auo
+}
+
+// ClearACLEnabled clears the value of the "acl_enabled" field.
+func (auo *ArticleUpdateOne) ClearACLEnabled() *ArticleUpdateOne {
+	auo.mutation.ClearACLEnabled()
+	return auo
+}
+
 // Mutation returns the ArticleMutation object of the builder.
 func (auo *ArticleUpdateOne) Mutation() *ArticleMutation {
 	return auo.mutation
@@ -1450,6 +1503,19 @@ func (auo *ArticleUpdateOne) sqlSave(ctx context.Context) (_node *Article, err e
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Column: article.FieldPublishedAt,
+		})
+	}
+	if value, ok := auo.mutation.ACLEnabled(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: article.FieldACLEnabled,
+		})
+	}
+	if auo.mutation.ACLEnabledCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Column: article.FieldACLEnabled,
 		})
 	}
 	_spec.Modifiers = auo.modifiers

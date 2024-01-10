@@ -148,6 +148,10 @@ func init() {
 	articleDescPublishedAt := articleFields[13].Descriptor()
 	// article.DefaultPublishedAt holds the default value on creation for the published_at field.
 	article.DefaultPublishedAt = articleDescPublishedAt.Default.(uint32)
+	// articleDescACLEnabled is the schema descriptor for acl_enabled field.
+	articleDescACLEnabled := articleFields[14].Descriptor()
+	// article.DefaultACLEnabled holds the default value on creation for the acl_enabled field.
+	article.DefaultACLEnabled = articleDescACLEnabled.Default.(bool)
 	categoryMixin := schema.Category{}.Mixin()
 	category.Policy = privacy.NewPolicies(categoryMixin[0], schema.Category{})
 	category.Hooks[0] = func(next ent.Mutator) ent.Mutator {

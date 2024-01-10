@@ -48,6 +48,8 @@ const (
 	FieldLatest = "latest"
 	// FieldPublishedAt holds the string denoting the published_at field in the database.
 	FieldPublishedAt = "published_at"
+	// FieldACLEnabled holds the string denoting the acl_enabled field in the database.
+	FieldACLEnabled = "acl_enabled"
 	// Table holds the table name of the article in the database.
 	Table = "articles"
 )
@@ -73,6 +75,7 @@ var Columns = []string{
 	FieldContentURL,
 	FieldLatest,
 	FieldPublishedAt,
+	FieldACLEnabled,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -130,4 +133,6 @@ var (
 	DefaultLatest bool
 	// DefaultPublishedAt holds the default value on creation for the "published_at" field.
 	DefaultPublishedAt uint32
+	// DefaultACLEnabled holds the default value on creation for the "acl_enabled" field.
+	DefaultACLEnabled bool
 )
