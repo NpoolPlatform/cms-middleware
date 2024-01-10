@@ -144,6 +144,7 @@ func (h *queryHandler) queryACLRoles(ctx context.Context) error {
 			).
 			Select(
 				entacl.FieldRoleID,
+				entacl.FieldArticleKey,
 			).
 			Scan(_ctx, &acls)
 	})
