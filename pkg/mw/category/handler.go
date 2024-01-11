@@ -95,6 +95,10 @@ func WithParentID(id *string, must bool) func(context.Context, *Handler) error {
 		if err != nil {
 			return err
 		}
+		nilUUID := uuid.Nil.String()
+		if *id == nilUUID {
+			return nil
+		}
 		h.ParentID = &_id
 		return nil
 	}
