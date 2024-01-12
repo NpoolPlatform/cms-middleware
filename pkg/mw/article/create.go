@@ -96,6 +96,7 @@ func (h *createHandler) checkVersion(ctx context.Context, tx *ent.Tx) error {
 	latestInfo := h.getLatestedArticle(infos)
 	h.oldArticleInfo = latestInfo
 	newVersion := latestInfo.Version + 1
+	h.ACLEnabled = &latestInfo.ACLEnabled
 	if *h.Version != newVersion {
 		return fmt.Errorf("invalid version")
 	}
