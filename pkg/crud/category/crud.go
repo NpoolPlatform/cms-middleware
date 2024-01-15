@@ -16,6 +16,7 @@ type Req struct {
 	Name      *string
 	Slug      *string
 	Enabled   *bool
+	Index     *uint32
 	DeletedAt *uint32
 }
 
@@ -38,6 +39,9 @@ func CreateSet(c *ent.CategoryCreate, req *Req) *ent.CategoryCreate {
 	if req.Enabled != nil {
 		c.SetEnabled(*req.Enabled)
 	}
+	if req.Index != nil {
+		c.SetIndex(*req.Index)
+	}
 
 	return c
 }
@@ -58,6 +62,9 @@ func UpdateSet(u *ent.CategoryUpdateOne, req *Req) *ent.CategoryUpdateOne {
 	if req.Slug != nil {
 		u.SetSlug(*req.Slug)
 	}
+	if req.Index != nil {
+		u.SetIndex(*req.Index)
+	}
 	return u
 }
 
@@ -71,6 +78,7 @@ type Conds struct {
 	Slug     *cruder.Cond
 	IDs      *cruder.Cond
 	EntIDs   *cruder.Cond
+	Index    *cruder.Cond
 }
 
 //nolint
@@ -203,6 +211,21 @@ func SetQueryConds(q *ent.CategoryQuery, conds *Conds) (*ent.CategoryQuery, erro
 			)
 		default:
 			return nil, fmt.Errorf("invalid enabled field")
+		}
+	}
+	if conds.Index != nil {
+		index, ok := conds.Index.Val.(uint32)
+		if !ok {
+			return nil, fmt.Errorf("invalid index")
+		}
+		switch conds.Index.Op {
+		case cruder.EQ:
+			q.Where(
+				entcategory.Index(index),
+				entcategory.DeletedAt(0),
+			)
+		default:
+			return nil, fmt.Errorf("invalid index field")
 		}
 	}
 

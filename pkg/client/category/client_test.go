@@ -40,6 +40,7 @@ var ret = &npool.Category{
 	Name:    uuid.NewString(),
 	Slug:    uuid.NewString(),
 	Enabled: false,
+	Index:   uint32(0),
 }
 
 var req = &npool.CategoryReq{
@@ -48,6 +49,7 @@ var req = &npool.CategoryReq{
 	Name:    &ret.Name,
 	Slug:    &ret.Slug,
 	Enabled: &ret.Enabled,
+	Index:   &ret.Index,
 }
 
 func createCategory(t *testing.T) {

@@ -29,6 +29,7 @@ func (h *queryHandler) selectCategory(stm *ent.CategoryQuery) {
 		entcategory.FieldName,
 		entcategory.FieldSlug,
 		entcategory.FieldEnabled,
+		entcategory.FieldIndex,
 		entcategory.FieldCreatedAt,
 		entcategory.FieldUpdatedAt,
 	)
@@ -111,7 +112,7 @@ func (h *Handler) GetCategories(ctx context.Context) ([]*npool.Category, uint32,
 		handler.stm.
 			Offset(int(handler.Offset)).
 			Limit(int(handler.Limit)).
-			Order(ent.Asc(entcategory.FieldCreatedAt)).
+			Order(ent.Asc(entcategory.FieldIndex)).
 			Modify(func(s *sql.Selector) {})
 		if err := handler.scan(ctx); err != nil {
 			return nil

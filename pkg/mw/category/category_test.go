@@ -33,6 +33,7 @@ var (
 		Name:    uuid.NewString(),
 		Slug:    uuid.NewString(),
 		Enabled: false,
+		Index:   uint32(0),
 	}
 )
 
@@ -47,7 +48,8 @@ func createCategory(t *testing.T) {
 		WithAppID(&ret.AppID, true),
 		WithName(&ret.Name, true),
 		WithEnabled(&ret.Enabled, false),
-		WithSlug(&ret.Slug, false),
+		WithSlug(&ret.Slug, true),
+		WithIndex(&ret.Index, true),
 	)
 	assert.Nil(t, err)
 
