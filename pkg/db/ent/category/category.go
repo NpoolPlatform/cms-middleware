@@ -30,6 +30,8 @@ const (
 	FieldSlug = "slug"
 	// FieldEnabled holds the string denoting the enabled field in the database.
 	FieldEnabled = "enabled"
+	// FieldIndex holds the string denoting the index field in the database.
+	FieldIndex = "index"
 	// Table holds the table name of the category in the database.
 	Table = "categories"
 )
@@ -46,6 +48,7 @@ var Columns = []string{
 	FieldName,
 	FieldSlug,
 	FieldEnabled,
+	FieldIndex,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -85,4 +88,6 @@ var (
 	DefaultSlug string
 	// DefaultEnabled holds the default value on creation for the "enabled" field.
 	DefaultEnabled bool
+	// DefaultIndex holds the default value on creation for the "index" field.
+	DefaultIndex uint32
 )

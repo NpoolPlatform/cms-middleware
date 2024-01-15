@@ -34,6 +34,8 @@ type Category struct {
 	Slug string `json:"slug,omitempty"`
 	// Enabled holds the value of the "enabled" field.
 	Enabled bool `json:"enabled,omitempty"`
+	// Index holds the value of the "index" field.
+	Index uint32 `json:"index,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -43,7 +45,7 @@ func (*Category) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case category.FieldEnabled:
 			values[i] = new(sql.NullBool)
-		case category.FieldID, category.FieldCreatedAt, category.FieldUpdatedAt, category.FieldDeletedAt:
+		case category.FieldID, category.FieldCreatedAt, category.FieldUpdatedAt, category.FieldDeletedAt, category.FieldIndex:
 			values[i] = new(sql.NullInt64)
 		case category.FieldName, category.FieldSlug:
 			values[i] = new(sql.NullString)
@@ -124,6 +126,12 @@ func (c *Category) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				c.Enabled = value.Bool
 			}
+		case category.FieldIndex:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field index", values[i])
+			} else if value.Valid {
+				c.Index = uint32(value.Int64)
+			}
 		}
 	}
 	return nil
@@ -178,6 +186,9 @@ func (c *Category) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("enabled=")
 	builder.WriteString(fmt.Sprintf("%v", c.Enabled))
+	builder.WriteString(", ")
+	builder.WriteString("index=")
+	builder.WriteString(fmt.Sprintf("%v", c.Index))
 	builder.WriteByte(')')
 	return builder.String()
 }

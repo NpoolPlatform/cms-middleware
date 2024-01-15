@@ -43,6 +43,10 @@ func (Category) Fields() []ent.Field {
 			Bool("enabled").
 			Optional().
 			Default(false),
+		field.
+			Uint32("index").
+			Optional().
+			Default(0),
 	}
 }
 

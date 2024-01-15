@@ -184,6 +184,33 @@ func (cu *CategoryUpdate) ClearEnabled() *CategoryUpdate {
 	return cu
 }
 
+// SetIndex sets the "index" field.
+func (cu *CategoryUpdate) SetIndex(u uint32) *CategoryUpdate {
+	cu.mutation.ResetIndex()
+	cu.mutation.SetIndex(u)
+	return cu
+}
+
+// SetNillableIndex sets the "index" field if the given value is not nil.
+func (cu *CategoryUpdate) SetNillableIndex(u *uint32) *CategoryUpdate {
+	if u != nil {
+		cu.SetIndex(*u)
+	}
+	return cu
+}
+
+// AddIndex adds u to the "index" field.
+func (cu *CategoryUpdate) AddIndex(u int32) *CategoryUpdate {
+	cu.mutation.AddIndex(u)
+	return cu
+}
+
+// ClearIndex clears the value of the "index" field.
+func (cu *CategoryUpdate) ClearIndex() *CategoryUpdate {
+	cu.mutation.ClearIndex()
+	return cu
+}
+
 // Mutation returns the CategoryMutation object of the builder.
 func (cu *CategoryUpdate) Mutation() *CategoryMutation {
 	return cu.mutation
@@ -390,6 +417,26 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: category.FieldEnabled,
 		})
 	}
+	if value, ok := cu.mutation.Index(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: category.FieldIndex,
+		})
+	}
+	if value, ok := cu.mutation.AddedIndex(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: category.FieldIndex,
+		})
+	}
+	if cu.mutation.IndexCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: category.FieldIndex,
+		})
+	}
 	_spec.Modifiers = cu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -563,6 +610,33 @@ func (cuo *CategoryUpdateOne) SetNillableEnabled(b *bool) *CategoryUpdateOne {
 // ClearEnabled clears the value of the "enabled" field.
 func (cuo *CategoryUpdateOne) ClearEnabled() *CategoryUpdateOne {
 	cuo.mutation.ClearEnabled()
+	return cuo
+}
+
+// SetIndex sets the "index" field.
+func (cuo *CategoryUpdateOne) SetIndex(u uint32) *CategoryUpdateOne {
+	cuo.mutation.ResetIndex()
+	cuo.mutation.SetIndex(u)
+	return cuo
+}
+
+// SetNillableIndex sets the "index" field if the given value is not nil.
+func (cuo *CategoryUpdateOne) SetNillableIndex(u *uint32) *CategoryUpdateOne {
+	if u != nil {
+		cuo.SetIndex(*u)
+	}
+	return cuo
+}
+
+// AddIndex adds u to the "index" field.
+func (cuo *CategoryUpdateOne) AddIndex(u int32) *CategoryUpdateOne {
+	cuo.mutation.AddIndex(u)
+	return cuo
+}
+
+// ClearIndex clears the value of the "index" field.
+func (cuo *CategoryUpdateOne) ClearIndex() *CategoryUpdateOne {
+	cuo.mutation.ClearIndex()
 	return cuo
 }
 
@@ -800,6 +874,26 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Column: category.FieldEnabled,
+		})
+	}
+	if value, ok := cuo.mutation.Index(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: category.FieldIndex,
+		})
+	}
+	if value, ok := cuo.mutation.AddedIndex(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: category.FieldIndex,
+		})
+	}
+	if cuo.mutation.IndexCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: category.FieldIndex,
 		})
 	}
 	_spec.Modifiers = cuo.modifiers

@@ -140,6 +140,20 @@ func (cc *CategoryCreate) SetNillableEnabled(b *bool) *CategoryCreate {
 	return cc
 }
 
+// SetIndex sets the "index" field.
+func (cc *CategoryCreate) SetIndex(u uint32) *CategoryCreate {
+	cc.mutation.SetIndex(u)
+	return cc
+}
+
+// SetNillableIndex sets the "index" field if the given value is not nil.
+func (cc *CategoryCreate) SetNillableIndex(u *uint32) *CategoryCreate {
+	if u != nil {
+		cc.SetIndex(*u)
+	}
+	return cc
+}
+
 // SetID sets the "id" field.
 func (cc *CategoryCreate) SetID(u uint32) *CategoryCreate {
 	cc.mutation.SetID(u)
@@ -272,6 +286,10 @@ func (cc *CategoryCreate) defaults() error {
 		v := category.DefaultEnabled
 		cc.mutation.SetEnabled(v)
 	}
+	if _, ok := cc.mutation.Index(); !ok {
+		v := category.DefaultIndex
+		cc.mutation.SetIndex(v)
+	}
 	return nil
 }
 
@@ -397,6 +415,14 @@ func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 			Column: category.FieldEnabled,
 		})
 		_node.Enabled = value
+	}
+	if value, ok := cc.mutation.Index(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: category.FieldIndex,
+		})
+		_node.Index = value
 	}
 	return _node, _spec
 }
@@ -599,6 +625,30 @@ func (u *CategoryUpsert) UpdateEnabled() *CategoryUpsert {
 // ClearEnabled clears the value of the "enabled" field.
 func (u *CategoryUpsert) ClearEnabled() *CategoryUpsert {
 	u.SetNull(category.FieldEnabled)
+	return u
+}
+
+// SetIndex sets the "index" field.
+func (u *CategoryUpsert) SetIndex(v uint32) *CategoryUpsert {
+	u.Set(category.FieldIndex, v)
+	return u
+}
+
+// UpdateIndex sets the "index" field to the value that was provided on create.
+func (u *CategoryUpsert) UpdateIndex() *CategoryUpsert {
+	u.SetExcluded(category.FieldIndex)
+	return u
+}
+
+// AddIndex adds v to the "index" field.
+func (u *CategoryUpsert) AddIndex(v uint32) *CategoryUpsert {
+	u.Add(category.FieldIndex, v)
+	return u
+}
+
+// ClearIndex clears the value of the "index" field.
+func (u *CategoryUpsert) ClearIndex() *CategoryUpsert {
+	u.SetNull(category.FieldIndex)
 	return u
 }
 
@@ -824,6 +874,34 @@ func (u *CategoryUpsertOne) UpdateEnabled() *CategoryUpsertOne {
 func (u *CategoryUpsertOne) ClearEnabled() *CategoryUpsertOne {
 	return u.Update(func(s *CategoryUpsert) {
 		s.ClearEnabled()
+	})
+}
+
+// SetIndex sets the "index" field.
+func (u *CategoryUpsertOne) SetIndex(v uint32) *CategoryUpsertOne {
+	return u.Update(func(s *CategoryUpsert) {
+		s.SetIndex(v)
+	})
+}
+
+// AddIndex adds v to the "index" field.
+func (u *CategoryUpsertOne) AddIndex(v uint32) *CategoryUpsertOne {
+	return u.Update(func(s *CategoryUpsert) {
+		s.AddIndex(v)
+	})
+}
+
+// UpdateIndex sets the "index" field to the value that was provided on create.
+func (u *CategoryUpsertOne) UpdateIndex() *CategoryUpsertOne {
+	return u.Update(func(s *CategoryUpsert) {
+		s.UpdateIndex()
+	})
+}
+
+// ClearIndex clears the value of the "index" field.
+func (u *CategoryUpsertOne) ClearIndex() *CategoryUpsertOne {
+	return u.Update(func(s *CategoryUpsert) {
+		s.ClearIndex()
 	})
 }
 
@@ -1214,6 +1292,34 @@ func (u *CategoryUpsertBulk) UpdateEnabled() *CategoryUpsertBulk {
 func (u *CategoryUpsertBulk) ClearEnabled() *CategoryUpsertBulk {
 	return u.Update(func(s *CategoryUpsert) {
 		s.ClearEnabled()
+	})
+}
+
+// SetIndex sets the "index" field.
+func (u *CategoryUpsertBulk) SetIndex(v uint32) *CategoryUpsertBulk {
+	return u.Update(func(s *CategoryUpsert) {
+		s.SetIndex(v)
+	})
+}
+
+// AddIndex adds v to the "index" field.
+func (u *CategoryUpsertBulk) AddIndex(v uint32) *CategoryUpsertBulk {
+	return u.Update(func(s *CategoryUpsert) {
+		s.AddIndex(v)
+	})
+}
+
+// UpdateIndex sets the "index" field to the value that was provided on create.
+func (u *CategoryUpsertBulk) UpdateIndex() *CategoryUpsertBulk {
+	return u.Update(func(s *CategoryUpsert) {
+		s.UpdateIndex()
+	})
+}
+
+// ClearIndex clears the value of the "index" field.
+func (u *CategoryUpsertBulk) ClearIndex() *CategoryUpsertBulk {
+	return u.Update(func(s *CategoryUpsert) {
+		s.ClearIndex()
 	})
 }
 

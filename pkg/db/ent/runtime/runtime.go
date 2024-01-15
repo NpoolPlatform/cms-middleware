@@ -202,6 +202,10 @@ func init() {
 	categoryDescEnabled := categoryFields[4].Descriptor()
 	// category.DefaultEnabled holds the default value on creation for the enabled field.
 	category.DefaultEnabled = categoryDescEnabled.Default.(bool)
+	// categoryDescIndex is the schema descriptor for index field.
+	categoryDescIndex := categoryFields[5].Descriptor()
+	// category.DefaultIndex holds the default value on creation for the index field.
+	category.DefaultIndex = categoryDescIndex.Default.(uint32)
 	mediaMixin := schema.Media{}.Mixin()
 	media.Policy = privacy.NewPolicies(mediaMixin[0], schema.Media{})
 	media.Hooks[0] = func(next ent.Mutator) ent.Mutator {

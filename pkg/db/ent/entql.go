@@ -89,6 +89,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			category.FieldName:      {Type: field.TypeString, Column: category.FieldName},
 			category.FieldSlug:      {Type: field.TypeString, Column: category.FieldSlug},
 			category.FieldEnabled:   {Type: field.TypeBool, Column: category.FieldEnabled},
+			category.FieldIndex:     {Type: field.TypeUint32, Column: category.FieldIndex},
 		},
 	}
 	graph.Nodes[3] = &sqlgraph.Node{
@@ -415,6 +416,11 @@ func (f *CategoryFilter) WhereSlug(p entql.StringP) {
 // WhereEnabled applies the entql bool predicate on the enabled field.
 func (f *CategoryFilter) WhereEnabled(p entql.BoolP) {
 	f.Where(p.Field(category.FieldEnabled))
+}
+
+// WhereIndex applies the entql uint32 predicate on the index field.
+func (f *CategoryFilter) WhereIndex(p entql.Uint32P) {
+	f.Where(p.Field(category.FieldIndex))
 }
 
 // addPredicate implements the predicateAdder interface.

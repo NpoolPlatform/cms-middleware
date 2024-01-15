@@ -2563,6 +2563,8 @@ type CategoryMutation struct {
 	name          *string
 	slug          *string
 	enabled       *bool
+	index         *uint32
+	addindex      *int32
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*Category, error)
@@ -3109,6 +3111,76 @@ func (m *CategoryMutation) ResetEnabled() {
 	delete(m.clearedFields, category.FieldEnabled)
 }
 
+// SetIndex sets the "index" field.
+func (m *CategoryMutation) SetIndex(u uint32) {
+	m.index = &u
+	m.addindex = nil
+}
+
+// Index returns the value of the "index" field in the mutation.
+func (m *CategoryMutation) Index() (r uint32, exists bool) {
+	v := m.index
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIndex returns the old "index" field's value of the Category entity.
+// If the Category object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CategoryMutation) OldIndex(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIndex is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIndex requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIndex: %w", err)
+	}
+	return oldValue.Index, nil
+}
+
+// AddIndex adds u to the "index" field.
+func (m *CategoryMutation) AddIndex(u int32) {
+	if m.addindex != nil {
+		*m.addindex += u
+	} else {
+		m.addindex = &u
+	}
+}
+
+// AddedIndex returns the value that was added to the "index" field in this mutation.
+func (m *CategoryMutation) AddedIndex() (r int32, exists bool) {
+	v := m.addindex
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearIndex clears the value of the "index" field.
+func (m *CategoryMutation) ClearIndex() {
+	m.index = nil
+	m.addindex = nil
+	m.clearedFields[category.FieldIndex] = struct{}{}
+}
+
+// IndexCleared returns if the "index" field was cleared in this mutation.
+func (m *CategoryMutation) IndexCleared() bool {
+	_, ok := m.clearedFields[category.FieldIndex]
+	return ok
+}
+
+// ResetIndex resets all changes to the "index" field.
+func (m *CategoryMutation) ResetIndex() {
+	m.index = nil
+	m.addindex = nil
+	delete(m.clearedFields, category.FieldIndex)
+}
+
 // Where appends a list predicates to the CategoryMutation builder.
 func (m *CategoryMutation) Where(ps ...predicate.Category) {
 	m.predicates = append(m.predicates, ps...)
@@ -3128,7 +3200,7 @@ func (m *CategoryMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CategoryMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
 	if m.created_at != nil {
 		fields = append(fields, category.FieldCreatedAt)
 	}
@@ -3156,6 +3228,9 @@ func (m *CategoryMutation) Fields() []string {
 	if m.enabled != nil {
 		fields = append(fields, category.FieldEnabled)
 	}
+	if m.index != nil {
+		fields = append(fields, category.FieldIndex)
+	}
 	return fields
 }
 
@@ -3182,6 +3257,8 @@ func (m *CategoryMutation) Field(name string) (ent.Value, bool) {
 		return m.Slug()
 	case category.FieldEnabled:
 		return m.Enabled()
+	case category.FieldIndex:
+		return m.Index()
 	}
 	return nil, false
 }
@@ -3209,6 +3286,8 @@ func (m *CategoryMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldSlug(ctx)
 	case category.FieldEnabled:
 		return m.OldEnabled(ctx)
+	case category.FieldIndex:
+		return m.OldIndex(ctx)
 	}
 	return nil, fmt.Errorf("unknown Category field %s", name)
 }
@@ -3281,6 +3360,13 @@ func (m *CategoryMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetEnabled(v)
 		return nil
+	case category.FieldIndex:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIndex(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Category field %s", name)
 }
@@ -3298,6 +3384,9 @@ func (m *CategoryMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, category.FieldDeletedAt)
 	}
+	if m.addindex != nil {
+		fields = append(fields, category.FieldIndex)
+	}
 	return fields
 }
 
@@ -3312,6 +3401,8 @@ func (m *CategoryMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case category.FieldDeletedAt:
 		return m.AddedDeletedAt()
+	case category.FieldIndex:
+		return m.AddedIndex()
 	}
 	return nil, false
 }
@@ -3342,6 +3433,13 @@ func (m *CategoryMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddDeletedAt(v)
 		return nil
+	case category.FieldIndex:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddIndex(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Category numeric field %s", name)
 }
@@ -3361,6 +3459,9 @@ func (m *CategoryMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(category.FieldEnabled) {
 		fields = append(fields, category.FieldEnabled)
+	}
+	if m.FieldCleared(category.FieldIndex) {
+		fields = append(fields, category.FieldIndex)
 	}
 	return fields
 }
@@ -3387,6 +3488,9 @@ func (m *CategoryMutation) ClearField(name string) error {
 		return nil
 	case category.FieldEnabled:
 		m.ClearEnabled()
+		return nil
+	case category.FieldIndex:
+		m.ClearIndex()
 		return nil
 	}
 	return fmt.Errorf("unknown Category nullable field %s", name)
@@ -3422,6 +3526,9 @@ func (m *CategoryMutation) ResetField(name string) error {
 		return nil
 	case category.FieldEnabled:
 		m.ResetEnabled()
+		return nil
+	case category.FieldIndex:
+		m.ResetIndex()
 		return nil
 	}
 	return fmt.Errorf("unknown Category field %s", name)

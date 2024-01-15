@@ -81,6 +81,7 @@ var (
 		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "slug", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "enabled", Type: field.TypeBool, Nullable: true, Default: false},
+		{Name: "index", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// CategoriesTable holds the schema information for the "categories" table.
 	CategoriesTable = &schema.Table{
