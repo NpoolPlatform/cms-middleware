@@ -74,6 +74,7 @@ var req = &npool.ArticleReq{
 }
 
 var slug = uuid.NewString()
+var index = uint32(0)
 
 func setup(t *testing.T) func(*testing.T) {
 	info1, err := category1.CreateCategory(context.Background(), &categorymwpb.CategoryReq{
@@ -81,6 +82,7 @@ func setup(t *testing.T) func(*testing.T) {
 		AppID: &ret.AppID,
 		Name:  &ret.CategoryName,
 		Slug:  &slug,
+		Index: &index,
 	})
 	assert.Nil(t, err)
 	assert.NotNil(t, info1)
