@@ -27,7 +27,7 @@ func (s *Server) UpdateCategory(ctx context.Context, in *npool.UpdateCategoryReq
 		category1.WithParentID(req.ParentID, false),
 		category1.WithName(req.Name, false),
 		category1.WithEnabled(req.Enabled, false),
-		category1.WithIndex(req.Index, true),
+		category1.WithIndex(req.Index, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

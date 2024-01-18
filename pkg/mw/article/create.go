@@ -28,6 +28,7 @@ func (h *createHandler) checkArticleExist(ctx context.Context) error {
 	h.Conds = &articlecrud.Conds{
 		Title:      &cruder.Cond{Op: cruder.EQ, Val: *h.Title},
 		AppID:      &cruder.Cond{Op: cruder.EQ, Val: *h.AppID},
+		ISO:        &cruder.Cond{Op: cruder.EQ, Val: *h.ISO},
 		Latest:     &cruder.Cond{Op: cruder.EQ, Val: latest},
 		ArticleKey: &cruder.Cond{Op: cruder.NEQ, Val: *h.ArticleKey},
 	}
