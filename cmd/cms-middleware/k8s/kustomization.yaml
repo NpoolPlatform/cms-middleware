@@ -1,0 +1,5 @@
+resources:
+  - 01-cms-middleware.viper.yaml
+  - 02-cms-middleware.yaml
+  - 03-strip-prefix.yaml
+  - 04-service-monitor.yaml
