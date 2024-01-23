@@ -71,6 +71,7 @@ func (h *Handler) UpdateArticle(ctx context.Context) (*npool.Article, error) {
 	appID := uuid.MustParse(info.AppID)
 	h.AppID = &appID
 	h.ISO = &info.ISO
+	h.Host = &info.Host
 
 	if h.Title != nil {
 		latest := true
@@ -80,6 +81,7 @@ func (h *Handler) UpdateArticle(ctx context.Context) (*npool.Article, error) {
 			AppID:  &cruder.Cond{Op: cruder.EQ, Val: *h.AppID},
 			ISO:    &cruder.Cond{Op: cruder.EQ, Val: *h.ISO},
 			Latest: &cruder.Cond{Op: cruder.EQ, Val: latest},
+			Host:   &cruder.Cond{Op: cruder.EQ, Val: *h.Host},
 		}
 		exist, err := h.ExistArticleConds(ctx)
 		if err != nil {
