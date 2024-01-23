@@ -23,6 +23,9 @@ func (h *Handler) DeleteArticle(ctx context.Context) (*npool.Article, error) {
 	if err != nil {
 		return nil, err
 	}
+	if info == nil {
+		return nil, fmt.Errorf("article not found")
+	}
 	articleKey := uuid.MustParse(info.ArticleKey)
 
 	now := uint32(time.Now().Unix())

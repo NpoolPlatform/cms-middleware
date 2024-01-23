@@ -58,16 +58,16 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 50800
-      targetPort: 50800
+      port: 50840
+      targetPort: 50840
     - name: grpc
-      port: 50801
-      targetPort: 50801
+      port: 50841
+      targetPort: 50841
     - name: healthz
-      port: 50802
-      targetPort: 50802
+      port: 50842
+      targetPort: 50842
     - name: prometheus
-      port: 50803
-      targetPort: 50803
+      port: 50843
+      targetPort: 50843
   selector:
     app: cms-middleware

@@ -413,5 +413,17 @@ func SetQueryConds(q *ent.ArticleQuery, conds *Conds) (*ent.ArticleQuery, error)
 			return nil, fmt.Errorf("invalid aclenabled field")
 		}
 	}
+	if conds.IDs != nil {
+		ids, ok := conds.IDs.Val.([]uint32)
+		if !ok {
+			return nil, fmt.Errorf("invalid ids")
+		}
+		switch conds.IDs.Op {
+		case cruder.IN:
+			q.Where(entarticle.IDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid id filed")
+		}
+	}
 	return q, nil
 }

@@ -228,6 +228,18 @@ func SetQueryConds(q *ent.CategoryQuery, conds *Conds) (*ent.CategoryQuery, erro
 			return nil, fmt.Errorf("invalid index field")
 		}
 	}
+	if conds.IDs != nil {
+		ids, ok := conds.IDs.Val.([]uint32)
+		if !ok {
+			return nil, fmt.Errorf("invalid ids")
+		}
+		switch conds.IDs.Op {
+		case cruder.IN:
+			q.Where(entcategory.IDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid id filed")
+		}
+	}
 
 	return q, nil
 }

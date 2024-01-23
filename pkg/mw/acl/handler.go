@@ -152,6 +152,20 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			}
 			h.Conds.ArticleKey = &cruder.Cond{Op: conds.GetArticleKey().GetOp(), Val: id}
 		}
+		if len(conds.GetEntIDs().GetValue()) > 0 {
+			ids := []uuid.UUID{}
+			for _, id := range conds.GetEntIDs().GetValue() {
+				_id, err := uuid.Parse(id)
+				if err != nil {
+					return err
+				}
+				ids = append(ids, _id)
+			}
+			h.Conds.EntIDs = &cruder.Cond{Op: conds.GetEntIDs().GetOp(), Val: ids}
+		}
+		if len(conds.GetIDs().GetValue()) > 0 {
+			h.Conds.IDs = &cruder.Cond{Op: conds.GetIDs().GetOp(), Val: conds.GetIDs().GetValue()}
+		}
 		return nil
 	}
 }
