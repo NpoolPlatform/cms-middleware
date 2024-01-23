@@ -3,6 +3,7 @@ package category
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	constant "github.com/NpoolPlatform/cms-middleware/pkg/const"
 	categorycrud "github.com/NpoolPlatform/cms-middleware/pkg/crud/category"
@@ -113,7 +114,7 @@ func WithName(name *string, must bool) func(context.Context, *Handler) error {
 			}
 			return nil
 		}
-		if *name == "" {
+		if strings.TrimSpace(*name) == "" {
 			return fmt.Errorf("invalid name")
 		}
 		h.Name = name
@@ -129,7 +130,7 @@ func WithSlug(slug *string, must bool) func(context.Context, *Handler) error {
 			}
 			return nil
 		}
-		if *slug == "" {
+		if strings.TrimSpace(*slug) == "" {
 			return fmt.Errorf("invalid slug")
 		}
 		h.Slug = slug
