@@ -1,10 +1,10 @@
 ---
 config:
   hostname: "cms-middleware.npool.top"
-  http_port: 50800
-  grpc_port: 50801
-  healthz_port: 50802
-  prometheus_port: 50803
+  http_port: 50840
+  grpc_port: 50841
+  healthz_port: 50842
+  prometheus_port: 50843
   appid: "89089012783789789719823798127398"
   serviceid: "91e32436-4894-11ed-905a-72e9de4b20a6"
   logdir: "./"
