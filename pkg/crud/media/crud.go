@@ -162,6 +162,18 @@ func SetQueryConds(q *ent.MediaQuery, conds *Conds) (*ent.MediaQuery, error) {
 			return nil, fmt.Errorf("invalid mediaurl field")
 		}
 	}
+	if conds.IDs != nil {
+		ids, ok := conds.IDs.Val.([]uint32)
+		if !ok {
+			return nil, fmt.Errorf("invalid ids")
+		}
+		switch conds.IDs.Op {
+		case cruder.IN:
+			q.Where(entmedia.IDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid id filed")
+		}
+	}
 
 	return q, nil
 }

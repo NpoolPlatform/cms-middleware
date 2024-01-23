@@ -164,6 +164,7 @@ func WithIndex(u *uint32, must bool) func(context.Context, *Handler) error {
 	}
 }
 
+//nolint:gocyclo
 func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		h.Conds = &categorycrud.Conds{}
@@ -202,6 +203,23 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 		if conds.Enabled != nil {
 			h.Conds.Enabled = &cruder.Cond{Op: conds.GetEnabled().GetOp(), Val: conds.GetEnabled().GetValue()}
+		}
+		if conds.Index != nil {
+			h.Conds.Index = &cruder.Cond{Op: conds.GetIndex().GetOp(), Val: conds.GetIndex().GetValue()}
+		}
+		if len(conds.GetEntIDs().GetValue()) > 0 {
+			ids := []uuid.UUID{}
+			for _, id := range conds.GetEntIDs().GetValue() {
+				_id, err := uuid.Parse(id)
+				if err != nil {
+					return err
+				}
+				ids = append(ids, _id)
+			}
+			h.Conds.EntIDs = &cruder.Cond{Op: conds.GetEntIDs().GetOp(), Val: ids}
+		}
+		if len(conds.GetIDs().GetValue()) > 0 {
+			h.Conds.IDs = &cruder.Cond{Op: conds.GetIDs().GetOp(), Val: conds.GetIDs().GetValue()}
 		}
 
 		return nil

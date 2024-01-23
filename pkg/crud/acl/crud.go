@@ -153,6 +153,18 @@ func SetQueryConds(q *ent.ACLQuery, conds *Conds) (*ent.ACLQuery, error) {
 			return nil, fmt.Errorf("invalid articlekey field")
 		}
 	}
+	if conds.IDs != nil {
+		ids, ok := conds.IDs.Val.([]uint32)
+		if !ok {
+			return nil, fmt.Errorf("invalid ids")
+		}
+		switch conds.IDs.Op {
+		case cruder.IN:
+			q.Where(entacl.IDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid id filed")
+		}
+	}
 
 	return q, nil
 }
