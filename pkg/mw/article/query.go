@@ -3,6 +3,7 @@ package article
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"entgo.io/ent/dialect/sql"
 
@@ -12,6 +13,7 @@ import (
 	entacl "github.com/NpoolPlatform/cms-middleware/pkg/db/ent/acl"
 	entarticle "github.com/NpoolPlatform/cms-middleware/pkg/db/ent/article"
 	entcategory "github.com/NpoolPlatform/cms-middleware/pkg/db/ent/category"
+	cruder "github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	types "github.com/NpoolPlatform/message/npool/basetypes/cms/v1"
 	npool "github.com/NpoolPlatform/message/npool/cms/mw/v1/article"
 	"github.com/google/uuid"
@@ -77,6 +79,23 @@ func (h *queryHandler) queryJoinMyself(s *sql.Selector) {
 			sql.As(t.C(entarticle.FieldPublishedAt), "published_at"),
 			sql.As(t.C(entarticle.FieldACLEnabled), "acl_enabled"),
 		)
+
+	if h.Conds != nil && h.Conds.Title != nil {
+		title, ok := h.Conds.Title.Val.(string)
+		if !ok {
+			return
+		}
+		switch h.Conds.Title.Op {
+		case cruder.EQ:
+			s.Where(
+				sql.EQ(sql.Lower(t.C(entarticle.FieldTitle)), strings.ToLower(title)),
+			)
+		case cruder.LIKE:
+			s.Where(
+				sql.Like(sql.Lower(t.C(entarticle.FieldTitle)), strings.ToLower(title)),
+			)
+		}
+	}
 }
 
 func (h *queryHandler) queryJoinCategory(s *sql.Selector) {
