@@ -149,7 +149,7 @@ func (h *createHandler) updateArticleLatest(ctx context.Context, tx *ent.Tx) err
 }
 
 func (h *Handler) CreateArticle(ctx context.Context) (*npool.Article, error) {
-	key := fmt.Sprintf("%v:%v:%v", basetypes.Prefix_PrefixCreateAppGood, *h.AppID, *h.Title)
+	key := fmt.Sprintf("%v:%v:%v", basetypes.Prefix_PrefixCreateArticle, *h.AppID, *h.Title)
 	if err := redis2.TryLock(key, 0); err != nil {
 		return nil, err
 	}

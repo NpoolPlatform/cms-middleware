@@ -99,7 +99,7 @@ func (h *Handler) CreateCategory(ctx context.Context) (*npool.Category, error) {
 	}
 
 	if h.ParentID != nil {
-		key := fmt.Sprintf("%v:%v:%v:%v", basetypes.Prefix_PrefixCreateAppGood, *h.AppID, *h.ParentID, *h.Slug)
+		key := fmt.Sprintf("%v:%v:%v:%v", basetypes.Prefix_PrefixCreateCategory, *h.AppID, *h.ParentID, *h.Slug)
 		if err := redis2.TryLock(key, 0); err != nil {
 			return nil, err
 		}
