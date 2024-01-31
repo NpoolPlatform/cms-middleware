@@ -261,21 +261,6 @@ func SetQueryConds(q *ent.ArticleQuery, conds *Conds) (*ent.ArticleQuery, error)
 			return nil, fmt.Errorf("invalid articlekey field")
 		}
 	}
-	if conds.Title != nil {
-		title, ok := conds.Title.Val.(string)
-		if !ok {
-			return nil, fmt.Errorf("invalid title")
-		}
-		switch conds.Title.Op {
-		case cruder.EQ:
-			q.Where(
-				entarticle.Title(title),
-				entarticle.DeletedAt(0),
-			)
-		default:
-			return nil, fmt.Errorf("invalid title field")
-		}
-	}
 	if conds.Subtitle != nil {
 		subtitle, ok := conds.Subtitle.Val.(string)
 		if !ok {
