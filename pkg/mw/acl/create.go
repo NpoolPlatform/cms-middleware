@@ -76,7 +76,7 @@ func (h *createHandler) createACL(ctx context.Context) error {
 }
 
 func (h *Handler) CreateACL(ctx context.Context) (*npool.ACL, error) {
-	lockKey := fmt.Sprintf("%v:%v:%v:%v", basetypes.Prefix_PrefixCreateAppLang, *h.AppID, *h.RoleID, *h.ArticleKey)
+	lockKey := fmt.Sprintf("%v:%v:%v:%v", basetypes.Prefix_PrefixCreateACL, *h.AppID, *h.RoleID, *h.ArticleKey)
 	if err := redis2.TryLock(lockKey, 0); err != nil {
 		return nil, err
 	}
